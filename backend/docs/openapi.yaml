@@ -1,0 +1,8 @@
+openapi: 3.1.0
+info:
+  title: jeagereats
+  version: 1.0.0
+  description: API for jeagereats
+servers:
+  - url: https://jeagereats.vercel.app
+paths: {}
