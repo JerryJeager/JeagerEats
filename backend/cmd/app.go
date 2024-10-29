@@ -4,9 +4,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/JerryJeager/JeagerEats/manualwire"
 	"github.com/JerryJeager/JeagerEats/middleware"
 	"github.com/gin-gonic/gin"
 )
+
+var userController = manualwire.GetUserController()
 
 func ExecuteApiRoutes() {
 	router := gin.Default()
@@ -18,6 +21,10 @@ func ExecuteApiRoutes() {
 			"message": "Welcome to JeagerEats",
 		})
 	})
+
+	api := router.Group("/api/v1")
+
+	api.POST("/users", userController.CreateUser)
 
 	port := os.Getenv("PORT")
 	if port == "" {

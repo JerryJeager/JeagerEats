@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -41,9 +42,9 @@ func ConnectToDB() {
 		log.Fatal(err)
 	}
 
-	// db.AutoMigrate(models.User{})
-	// db.AutoMigrate(models.Organisation{})
-	// db.AutoMigrate(models.Member{})
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Restaurant{})
+	db.AutoMigrate(&models.Rider{})
 	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true, PrepareStmt: true})
 	if Session != nil {
 		fmt.Println("success: created db session")
