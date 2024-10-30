@@ -23,7 +23,7 @@ func NewUserRepo(client *gorm.DB) *UserRepo {
 func (r *UserRepo) CreateUser(ctx context.Context, user *models.User, restaurant *models.Restaurant, rider *models.Rider) error {
 
 	if user.Role == models.CUSTOMER {
-		return r.client.Create(user).WithContext(ctx).Error
+		return config.Session.Create(user).WithContext(ctx).Error
 	}else{
 		err := config.Session.Transaction(func(tx *gorm.DB) error {
 			if err := tx.Create(user).WithContext(ctx).Error; err != nil {

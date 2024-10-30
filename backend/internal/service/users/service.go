@@ -2,13 +2,14 @@ package users
 
 import (
 	"context"
+	"errors"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/google/uuid"
 )
 
 type UserSv interface {
-	CreateUser(ctx context.Context, user *models.User) (uuid.UUID, error)
+	CreateUser(ctx context.Context, user *models.User) (string, error)
 }
 
 type UserServ struct {
@@ -19,7 +20,10 @@ func NewUserService(repo UserStore) *UserServ {
 	return &UserServ{repo: repo}
 }
 
-func (s *UserServ) CreateUser(ctx context.Context, user *models.User) (uuid.UUID, error) {
+func (s *UserServ) CreateUser(ctx context.Context, user *models.User) (string, error) {
+	if !models.IsValidRole(user.Role) {
+		return "", errors.New("invalid role")
+	}
 	restaurant := models.Restaurant{}
 	rider := models.Rider{}
 	id := uuid.New()
@@ -32,5 +36,8 @@ func (s *UserServ) CreateUser(ctx context.Context, user *models.User) (uuid.UUID
 		rider.ID = uuid.New()
 		rider.UserID = id
 	}
-	return id, s.repo.CreateUser(ctx, user, &restaurant, &rider)
+	if err := user.HashPassword(); err != nil {
+		return "", err
+	}
+	return id.String(), s.repo.CreateUser(ctx, user, &restaurant, &rider)
 }
