@@ -11,6 +11,7 @@ import (
 
 type RestaurantStore interface {
 	UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error
+	UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error
 }
 
 type RestaurantRepo struct {
@@ -23,4 +24,8 @@ func NewRestaurantRepo(client *gorm.DB) *RestaurantRepo {
 
 func (r *RestaurantRepo) UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error {
 	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Updates(restaurant).Error
+}
+
+func (r *RestaurantRepo) UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
+	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
 }

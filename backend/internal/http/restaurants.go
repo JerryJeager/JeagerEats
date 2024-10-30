@@ -1,12 +1,13 @@
 package http
 
 import (
+	"mime/multipart"
 	"net/http"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/JerryJeager/JeagerEats/internal/service/restaurants"
+	"github.com/JerryJeager/JeagerEats/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type RestaurantController struct {
@@ -18,17 +19,7 @@ func NewRestaurantController(serv restaurants.RestaurantSv) *RestaurantControlle
 }
 
 func (c *RestaurantController) UpdateRestaurant(ctx *gin.Context) {
-	userIDCtx, err := GetUserID(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		return
-	}
-	userID, err := uuid.Parse(userIDCtx)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	role, err := GetRole(ctx)
+	vendor, err := GetVendor(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
@@ -39,16 +30,45 @@ func (c *RestaurantController) UpdateRestaurant(ctx *gin.Context) {
 		return
 	}
 
-	if role != "vendor" {
-		ctx.JSON(http.StatusForbidden, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	err = c.serv.UpdateRestaurant(ctx, userID, &restaurant)
+	err = c.serv.UpdateRestaurant(ctx, vendor.UserID, &restaurant)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "Restaurant updated successfully"})
+}
+
+func (c *RestaurantController) UpdateRestaurantProfileImg(ctx *gin.Context) {
+	vendor, err := GetVendor(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	filename, ok := ctx.Get("filePath")
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "filename not found"})
+	}
+
+	file, ok := ctx.Get("file")
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "file not found"})
+		return
+	}
+
+	imageUrl, err := utils.UploadToCloudinary(file.(multipart.File), filename.(string))
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = c.serv.UpdateRestaurantProfileImg(ctx, vendor.UserID, imageUrl)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Restaurant profile image updated successfully", "image_url": imageUrl})
 }

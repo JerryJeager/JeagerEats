@@ -8,7 +8,8 @@ import (
 )
 
 type RestaurantSv interface {
-	 UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error
+	UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error
+	UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error
 }
 
 type RestaurantServ struct {
@@ -21,4 +22,8 @@ func NewRestaurantService(repo RestaurantStore) *RestaurantServ {
 
 func (s *RestaurantServ) UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error {
 	return s.repo.UpdateRestaurant(ctx, userID, restaurant)
+}
+
+func (s *RestaurantServ) UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
+	return s.repo.UpdateRestaurantProfileImg(ctx, userID, filePath)
 }

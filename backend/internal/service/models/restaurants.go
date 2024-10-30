@@ -31,3 +31,8 @@ type RestaurantUpdate struct {
 	ClosingTime time.Time `json:"closing_time"`
 	CuisineType string    `json:"cuisine_type"`
 }
+
+type Vendor struct {
+	UserID uuid.UUID `json:"user_id"`
+	Role   string    `json:"role"`
+}
