@@ -21,3 +21,18 @@ type Restaurant struct {
 	UpdatedAt   time.Time  `json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at"`
 }
+
+type RestaurantUpdate struct {
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Address     string    `json:"address"`
+	PhoneNumber string    `json:"phone_number"`
+	OpeningTime time.Time `json:"opening_time"`
+	ClosingTime time.Time `json:"closing_time"`
+	CuisineType string    `json:"cuisine_type"`
+}
+
+type Vendor struct {
+	UserID uuid.UUID `json:"user_id"`
+	Role   string    `json:"role"`
+}

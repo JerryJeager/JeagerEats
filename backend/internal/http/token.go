@@ -35,7 +35,7 @@ func getToken(c *gin.Context) (*jwt.Token, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return []byte(os.Getenv("API_SECRET")), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 	return token, err
 }

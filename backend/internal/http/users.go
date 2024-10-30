@@ -39,7 +39,7 @@ func (c *UserController) Login(ctx *gin.Context) {
 	}
 	id, token, err := c.serv.Login(ctx, &user)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Login failed", "error": err.Error()})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Login failed", "error": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "User logged in successfully", "id": id, "token": token})
