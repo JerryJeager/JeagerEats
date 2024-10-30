@@ -10,6 +10,7 @@ import (
 )
 
 var userController = manualwire.GetUserController()
+var restaurantController = manualwire.GetRestaurantController()
 
 func ExecuteApiRoutes() {
 	router := gin.Default()
@@ -24,10 +25,13 @@ func ExecuteApiRoutes() {
 
 	api := router.Group("/api/v1")
 	users := api.Group("/users")
+	restaurants := api.Group("/restaurants")
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
-	
+
+	restaurants.PATCH("/profile", middleware.JwtAuthMiddleware(), restaurantController.UpdateRestaurant)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
