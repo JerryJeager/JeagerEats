@@ -25,7 +25,8 @@ func ExecuteApiRoutes() {
 	api := router.Group("/api/v1")
 
 	api.POST("/users", userController.CreateUser)
-
+	api.POST("/users/login", userController.Login)
+	
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

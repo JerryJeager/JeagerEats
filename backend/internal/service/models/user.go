@@ -23,6 +23,11 @@ type User struct {
 	DeletedAt   *time.Time `json:"deleted_at"`
 }
 
+type UserLogin struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 const (
 	CUSTOMER = "customer"
 	VENDOR   = "vendor"
@@ -50,3 +55,4 @@ func (user *User) HashPassword() error {
 func VerifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
+

@@ -5,11 +5,13 @@ import (
 	"errors"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	"github.com/JerryJeager/JeagerEats/internal/utils"
 	"github.com/google/uuid"
 )
 
 type UserSv interface {
 	CreateUser(ctx context.Context, user *models.User) (string, error)
+	Login(ctx context.Context, user *models.UserLogin) (string, string, error)
 }
 
 type UserServ struct {
@@ -40,4 +42,19 @@ func (s *UserServ) CreateUser(ctx context.Context, user *models.User) (string, e
 		return "", err
 	}
 	return id.String(), s.repo.CreateUser(ctx, user, &restaurant, &rider)
+}
+
+func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, string, error) {
+	u, err := s.repo.GetUserByEmail(ctx, user.Email)
+	if err != nil {
+		return "", "", err
+	}
+	if err := models.VerifyPassword(user.Password, u.Password); err != nil {
+		return "","", err
+	}
+	token, err := utils.GenerateToken(u.ID, u.Role)
+	if err != nil {
+		return "", "", err
+	}
+	return u.ID.String(), token, nil
 }
