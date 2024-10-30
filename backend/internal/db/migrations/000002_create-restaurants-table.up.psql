@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS restaurants (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255),
+    opening_time TIMESTAMPTZ,
+    closing_time TIMESTAMPTZ,
+    cuisine_type VARCHAR(255),
+    is_active BOOLEAN,
+    profile_img VARCHAR(255),
+    rating INTEGER,
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    deleted_at TIMESTAMPTZ
+);

@@ -16,8 +16,8 @@ To test migration run the up and down of the migrations
 
 run:
 ```
- migrate -path db/migrations  -database "postgresql://postgres:YOURDATABASEPASSWORD@localhost:5432/DATABASE_NAME?sslmode=disable" -verbose  up 
+ migrate -path internal/db/migrations  -database "postgresql://postgres:YOURDATABASEPASSWORD@localhost:5432/DATABASE_NAME?sslmode=disable" -verbose  up 
 ```
 ```
- migrate -path db/migrations  -database "postgresql://postgres:YOURDATABASEPASSWORD@localhost:5432/DATABASE_NAME?sslmode=disable" -verbose  down 
+ migrate -path internal/db/migrations  -database "postgresql://postgres:YOURDATABASEPASSWORD@localhost:5432/DATABASE_NAME?sslmode=disable" -verbose  down 
 ```
