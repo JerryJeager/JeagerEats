@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	"github.com/JerryJeager/JeagerEats/internal/service/restaurants"
 	"github.com/JerryJeager/JeagerEats/internal/utils"
 	"github.com/google/uuid"
 )
@@ -49,10 +50,17 @@ func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, s
 	if err != nil {
 		return "", "", err
 	}
-	if err := models.VerifyPassword(user.Password, u.Password); err != nil {
-		return "","", err
+	var restaurant *models.Restaurant
+	if u.Role == models.VENDOR {
+		restaurant, err = restaurants.GetRestaurant(ctx, u.ID)
+		if err != nil {
+			return "", "", err
+		}
 	}
-	token, err := utils.GenerateToken(u.ID, u.Role)
+	if err := models.VerifyPassword(user.Password, u.Password); err != nil {
+		return "", "", err
+	}
+	token, err := utils.GenerateToken(u.ID, &restaurant.ID, u.Role)
 	if err != nil {
 		return "", "", err
 	}

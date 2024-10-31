@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS menus (
+    id uuid PRIMARY KEY,
+    restaurant_id uuid NOT NULL REFERENCES restaurants(id),
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    is_available BOOLEAN, 
+    img_url VARCHAR(255),
+    stock INT NOT NULL,
+    category VARCHAR(100),
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    deleted_at TIMESTAMPTZ
+);

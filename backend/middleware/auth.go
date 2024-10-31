@@ -12,7 +12,7 @@ import (
 func JwtAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		id, role, err := auth.ValidateToken(c)
+		id, role, restaurantID, err := auth.ValidateToken(c)
 
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -27,6 +27,7 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 
 		c.Set("user_id", id) 
 		c.Set("role", role)
+		c.Set("restaurant_id", restaurantID)
 
 		c.Next()
 	}

@@ -16,3 +16,6 @@ func GetUserID(ctx context.Context) (string, error) {
 func GetRole(ctx context.Context) (string, error) {
 	return ctx.Value("role").(string), nil
 }
+func GetRestaurantID(ctx context.Context) (string, error) {
+	return ctx.Value("restaurant_id").(string), nil
+}

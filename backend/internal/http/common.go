@@ -9,6 +9,7 @@ import (
 )
 
 func GetVendor(ctx *gin.Context) (*models.Vendor, error) {
+	var restaurantID uuid.UUID
 	userIDCtx, err := GetUserID(ctx)
 	if err != nil {
 		return nil, err
@@ -17,9 +18,20 @@ func GetVendor(ctx *gin.Context) (*models.Vendor, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	role, err := GetRole(ctx)
 	if role != "vendor" {
 		return nil, errors.New("unauthorized")
 	}
-	return &models.Vendor{UserID: userID, Role: role}, nil
+
+	restaurantIDCtx, err := GetRestaurantID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	restaurantID, err = uuid.Parse(restaurantIDCtx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.Vendor{UserID: userID, Role: role, RestaurantID: &restaurantID}, nil
 }
