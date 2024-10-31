@@ -1,11 +1,14 @@
 package http
 
 import (
+	"mime/multipart"
 	"net/http"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/menus"
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	"github.com/JerryJeager/JeagerEats/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type MenuController struct {
@@ -23,7 +26,7 @@ func (c *MenuController) CreateMenu(ctx *gin.Context) {
 		return
 	}
 	var menu models.Menu
-	if err := ctx.ShouldBindJSON(&menu); err != nil{
+	if err := ctx.ShouldBindJSON(&menu); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -33,4 +36,37 @@ func (c *MenuController) CreateMenu(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{"id": id})
+}
+
+func (c *MenuController) UpdateMenuImage(ctx *gin.Context) {
+	var menuIDPP MenuIDPathParam
+	if err := ctx.ShouldBindUri(&menuIDPP); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	menuID, err := uuid.Parse(menuIDPP.ID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	filename, ok := ctx.Get("filePath")
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "filename not found"})
+		return
+	}
+	file, ok := ctx.Get("file")
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "file not found"})
+		return
+	}
+	imageUrl, err := utils.UploadToCloudinary(file.(multipart.File), filename.(string))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if err := c.serv.UpdateMenuImage(ctx, menuID, imageUrl); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"message": "Menu image updated successfully", "image_url": imageUrl})
 }

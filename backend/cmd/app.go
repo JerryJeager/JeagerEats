@@ -39,6 +39,7 @@ func ExecuteApiRoutes() {
 	restaurants.GET("", restaurantController.GetAllRestaurantPublicProfile)
 
 	menus.POST("", middleware.JwtAuthMiddleware(), menuController.CreateMenu)
+	menus.PATCH("/img/:id", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), menuController.UpdateMenuImage)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -9,6 +9,7 @@ import (
 
 type MenuSv interface {
 	CreateMenu(ctx context.Context, restaurantID uuid.UUID, menu *models.Menu) (string, error)
+	UpdateMenuImage(ctx context.Context, menuID uuid.UUID, filePath string) error
 }
 
 type MenuServ struct {
@@ -27,4 +28,8 @@ func (s *MenuServ) CreateMenu(ctx context.Context, restaurantID uuid.UUID, menu 
 		return "", err
 	}
 	return id.String(), nil
+}
+
+func (s *MenuServ) UpdateMenuImage(ctx context.Context, menuID uuid.UUID, filePath string) error {
+	return s.repo.UpdateMenuImage(ctx, menuID, filePath)
 }
