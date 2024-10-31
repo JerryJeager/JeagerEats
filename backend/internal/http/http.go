@@ -7,7 +7,7 @@ type UserIDPathParam struct {
 }
 
 type RestaurantIDPathParam struct {
-	UserID string `uri:"id" binding:"required,uuid_rfc4122"`
+	ID string `uri:"id" binding:"required,uuid_rfc4122"`
 }
 
 func GetUserID(ctx context.Context) (string, error) {

@@ -13,6 +13,8 @@ type RestaurantStore interface {
 	UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error
 	UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error
 	UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive bool) error
+	GetRestaurantPublicProfile(ctx context.Context, id uuid.UUID) (*models.Restaurant, error)
+	GetAllRestaurantPublicProfile(ctx context.Context) (*models.RestaurantPublicProfileList, error)
 }
 
 type RestaurantRepo struct {
@@ -35,3 +37,19 @@ func (r *RestaurantRepo) UpdateRestaurantIsActive(ctx context.Context, userID uu
 	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("is_active", isActive).Error
 }
 
+func (r *RestaurantRepo) GetRestaurantPublicProfile(ctx context.Context, id uuid.UUID) (*models.Restaurant, error) {
+	var restaurant models.Restaurant
+	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("id = ?", id).First(&restaurant).Error; err != nil {
+		return nil, err
+	}
+	return &restaurant, nil
+}
+
+func (r *RestaurantRepo) GetAllRestaurantPublicProfile(ctx context.Context) (*models.RestaurantPublicProfileList, error) {
+	var res []models.Restaurant
+	var restaurants models.RestaurantPublicProfileList
+	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Find(&res).Scan(&restaurants).Error; err != nil {
+		return nil, err
+	}
+	return &restaurants, nil
+}

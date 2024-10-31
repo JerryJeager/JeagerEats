@@ -33,6 +33,8 @@ func ExecuteApiRoutes() {
 	restaurants.PATCH("/profile", middleware.JwtAuthMiddleware(), restaurantController.UpdateRestaurant)
 	restaurants.PATCH("/profile/img", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), restaurantController.UpdateRestaurantProfileImg)
 	restaurants.PATCH("/active", middleware.JwtAuthMiddleware(), restaurantController.UpdateRestaurantIsActive)
+	restaurants.GET("/:id", restaurantController.GetRestaurantPublicProfile)
+	restaurants.GET("", restaurantController.GetAllRestaurantPublicProfile)
 
 	port := os.Getenv("PORT")
 	if port == "" {
