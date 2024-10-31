@@ -36,3 +36,8 @@ type Vendor struct {
 	UserID uuid.UUID `json:"user_id"`
 	Role   string    `json:"role"`
 }
+
+type IsActive struct {
+	IsActive bool `json:"is_active"`
+}
+

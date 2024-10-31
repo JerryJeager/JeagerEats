@@ -10,6 +10,7 @@ import (
 type RestaurantSv interface {
 	UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error
 	UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error
+	UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive *models.IsActive) error
 }
 
 type RestaurantServ struct {
@@ -26,4 +27,8 @@ func (s *RestaurantServ) UpdateRestaurant(ctx context.Context, userID uuid.UUID,
 
 func (s *RestaurantServ) UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
 	return s.repo.UpdateRestaurantProfileImg(ctx, userID, filePath)
+}
+
+func (s *RestaurantServ) UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive *models.IsActive) error {
+	return s.repo.UpdateRestaurantIsActive(ctx, userID, isActive.IsActive)
 }

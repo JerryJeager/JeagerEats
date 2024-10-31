@@ -12,6 +12,7 @@ import (
 type RestaurantStore interface {
 	UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error
 	UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error
+	UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive bool) error
 }
 
 type RestaurantRepo struct {
@@ -29,3 +30,8 @@ func (r *RestaurantRepo) UpdateRestaurant(ctx context.Context, userID uuid.UUID,
 func (r *RestaurantRepo) UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
 	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
 }
+
+func (r *RestaurantRepo) UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive bool) error {
+	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("is_active", isActive).Error
+}
+

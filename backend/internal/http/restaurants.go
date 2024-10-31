@@ -72,3 +72,25 @@ func (c *RestaurantController) UpdateRestaurantProfileImg(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "Restaurant profile image updated successfully", "image_url": imageUrl})
 }
+
+func (c *RestaurantController) UpdateRestaurantIsActive(ctx *gin.Context) {
+	vendor, err := GetVendor(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	var isActive models.IsActive
+	if err := ctx.ShouldBindJSON(&isActive); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = c.serv.UpdateRestaurantIsActive(ctx, vendor.UserID, &isActive)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Restaurant active status updated successfully"})
+}
