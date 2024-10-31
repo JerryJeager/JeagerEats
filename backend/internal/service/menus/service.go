@@ -10,6 +10,9 @@ import (
 type MenuSv interface {
 	CreateMenu(ctx context.Context, restaurantID uuid.UUID, menu *models.Menu) (string, error)
 	UpdateMenuImage(ctx context.Context, menuID uuid.UUID, filePath string) error
+	GetMenusByRestaurantID(ctx context.Context, restaurantID uuid.UUID) (*models.Menus, error)
+	GetMenuByID(ctx context.Context, menuID uuid.UUID) (*models.Menu, error)
+	GetMenus(ctx context.Context) (*models.Menus, error)
 }
 
 type MenuServ struct {
@@ -33,3 +36,15 @@ func (s *MenuServ) CreateMenu(ctx context.Context, restaurantID uuid.UUID, menu 
 func (s *MenuServ) UpdateMenuImage(ctx context.Context, menuID uuid.UUID, filePath string) error {
 	return s.repo.UpdateMenuImage(ctx, menuID, filePath)
 }
+
+func (s *MenuServ) GetMenusByRestaurantID(ctx context.Context, restaurantID uuid.UUID) (*models.Menus, error) {
+	return s.repo.GetMenusByRestaurantID(ctx, restaurantID)
+}
+
+func (s *MenuServ) GetMenuByID(ctx context.Context, menuID uuid.UUID) (*models.Menu, error) {
+	return s.repo.GetMenuByID(ctx, menuID)
+}
+
+func (s *MenuServ) GetMenus(ctx context.Context) (*models.Menus, error) {
+	return s.repo.GetMenus(ctx)
+}	

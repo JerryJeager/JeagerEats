@@ -70,3 +70,50 @@ func (c *MenuController) UpdateMenuImage(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "Menu image updated successfully", "image_url": imageUrl})
 }
+
+func (c *MenuController) GetMenusByRestaurantID(ctx *gin.Context) {
+	var restaurantIDPP RestaurantIDPathParam
+	if err := ctx.ShouldBindUri(&restaurantIDPP); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	restaurantID, err := uuid.Parse(restaurantIDPP.ID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	menus, err := c.serv.GetMenusByRestaurantID(ctx, restaurantID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, menus)
+}
+
+func (c *MenuController) GetMenuByID(ctx *gin.Context) {
+	var menuIDPP MenuIDPathParam
+	if err := ctx.ShouldBindUri(&menuIDPP); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	menuID, err := uuid.Parse(menuIDPP.ID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	menu, err := c.serv.GetMenuByID(ctx, menuID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, *menu)
+}
+
+func (c *MenuController) GetMenus(ctx *gin.Context) {
+	menus, err := c.serv.GetMenus(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, menus)
+}

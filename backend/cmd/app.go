@@ -27,7 +27,7 @@ func ExecuteApiRoutes() {
 	api := router.Group("/api/v1")
 	users := api.Group("/users")
 	restaurants := api.Group("/restaurants")
-	menus := restaurants.Group("menus")
+	menus := api.Group("menus")
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
@@ -40,6 +40,9 @@ func ExecuteApiRoutes() {
 
 	menus.POST("", middleware.JwtAuthMiddleware(), menuController.CreateMenu)
 	menus.PATCH("/img/:id", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), menuController.UpdateMenuImage)
+	menus.GET("", menuController.GetMenus)
+	menus.GET("/restaurants/:id", menuController.GetMenusByRestaurantID)
+	menus.GET("/:id", menuController.GetMenuByID)
 
 	port := os.Getenv("PORT")
 	if port == "" {
