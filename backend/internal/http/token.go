@@ -11,21 +11,22 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func ValidateToken(c *gin.Context) (string, string, error) {
+func ValidateToken(c *gin.Context) (string, string, string, error) {
 	token, err := getToken(c)
 
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		id := claims["id"].(string)
 		role := claims["role"].(string)
-		return id, role, nil
+		restaurantID := claims["restaurant_id"].(string)
+		return id, role, restaurantID, nil
 	}
 
-	return "", "", errors.New("invalid token provided")
+	return "", "", "", errors.New("invalid token provided")
 }
 
 func getToken(c *gin.Context) (*jwt.Token, error) {

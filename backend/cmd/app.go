@@ -11,6 +11,7 @@ import (
 
 var userController = manualwire.GetUserController()
 var restaurantController = manualwire.GetRestaurantController()
+var menuController = manualwire.GetMenuController()
 
 func ExecuteApiRoutes() {
 	router := gin.Default()
@@ -26,6 +27,7 @@ func ExecuteApiRoutes() {
 	api := router.Group("/api/v1")
 	users := api.Group("/users")
 	restaurants := api.Group("/restaurants")
+	menus := api.Group("menus")
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
@@ -35,6 +37,14 @@ func ExecuteApiRoutes() {
 	restaurants.PATCH("/active", middleware.JwtAuthMiddleware(), restaurantController.UpdateRestaurantIsActive)
 	restaurants.GET("/:id", restaurantController.GetRestaurantPublicProfile)
 	restaurants.GET("", restaurantController.GetAllRestaurantPublicProfile)
+
+	menus.POST("", middleware.JwtAuthMiddleware(), menuController.CreateMenu)
+	menus.PATCH("/img/:id", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), menuController.UpdateMenuImage)
+	menus.GET("", menuController.GetMenus)
+	menus.GET("/restaurants/:id", menuController.GetMenusByRestaurantID)
+	menus.GET("/:id", menuController.GetMenuByID)
+	menus.DELETE("/:id", middleware.JwtAuthMiddleware(), menuController.DeleteMenu)
+	menus.PATCH("/:id", middleware.JwtAuthMiddleware(), menuController.UpdateMenu)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -53,3 +53,11 @@ func (r *RestaurantRepo) GetAllRestaurantPublicProfile(ctx context.Context) (*mo
 	}
 	return &restaurants, nil
 }
+
+func GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error) {
+	var restaurant models.Restaurant
+	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).First(&restaurant).Error; err != nil {
+		return nil, err
+	}
+	return &restaurant, nil
+}
