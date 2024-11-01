@@ -22,3 +22,13 @@ type Menu struct {
 }
 
 type Menus []Menu
+
+type MenuUpdate struct {
+	Name         string  `json:"name"`
+	Description  string  `json:"description"`
+	Price        float64 `json:"price"`
+	IsAvailable  bool    `json:"is_available"`
+	Stock        int     `json:"stock"`
+	Category     string  `json:"category"`
+}
+
