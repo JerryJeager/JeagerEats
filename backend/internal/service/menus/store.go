@@ -15,6 +15,7 @@ type MenuStore interface {
 	GetMenusByRestaurantID(ctx context.Context, restaurantID uuid.UUID) (*models.Menus, error)
 	GetMenuByID(ctx context.Context, menuID uuid.UUID) (*models.Menu, error)
 	GetMenus(ctx context.Context) (*models.Menus, error)
+	DeleteMenu(ctx context.Context, menuID uuid.UUID) error
 }
 
 type MenuRepo struct {
@@ -56,3 +57,8 @@ func (r *MenuRepo) GetMenus(ctx context.Context) (*models.Menus, error) {
 	}
 	return &menus, nil
 }
+
+func (r *MenuRepo) DeleteMenu(ctx context.Context, menuID uuid.UUID) error {
+	return config.Session.WithContext(ctx).Delete(&models.Menu{}, menuID).Error
+}
+

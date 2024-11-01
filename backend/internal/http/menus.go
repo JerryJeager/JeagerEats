@@ -103,7 +103,7 @@ func (c *MenuController) GetMenuByID(ctx *gin.Context) {
 	}
 	menu, err := c.serv.GetMenuByID(ctx, menuID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, *menu)
@@ -116,4 +116,22 @@ func (c *MenuController) GetMenus(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, menus)
+}
+
+func (c *MenuController) DeleteMenu(ctx *gin.Context) {
+	var menuIDPP MenuIDPathParam
+	if err := ctx.ShouldBindUri(&menuIDPP); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	menuID, err := uuid.Parse(menuIDPP.ID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err := c.serv.DeleteMenu(ctx, menuID); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusNoContent, gin.H{"message": "Menu deleted successfully"})
 }

@@ -13,6 +13,7 @@ type MenuSv interface {
 	GetMenusByRestaurantID(ctx context.Context, restaurantID uuid.UUID) (*models.Menus, error)
 	GetMenuByID(ctx context.Context, menuID uuid.UUID) (*models.Menu, error)
 	GetMenus(ctx context.Context) (*models.Menus, error)
+	DeleteMenu(ctx context.Context, menuID uuid.UUID) error
 }
 
 type MenuServ struct {
@@ -48,3 +49,8 @@ func (s *MenuServ) GetMenuByID(ctx context.Context, menuID uuid.UUID) (*models.M
 func (s *MenuServ) GetMenus(ctx context.Context) (*models.Menus, error) {
 	return s.repo.GetMenus(ctx)
 }	
+
+func (s *MenuServ) DeleteMenu(ctx context.Context, menuID uuid.UUID) error {
+	return s.repo.DeleteMenu(ctx, menuID)
+}
+

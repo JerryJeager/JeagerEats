@@ -43,6 +43,7 @@ func ExecuteApiRoutes() {
 	menus.GET("", menuController.GetMenus)
 	menus.GET("/restaurants/:id", menuController.GetMenusByRestaurantID)
 	menus.GET("/:id", menuController.GetMenuByID)
+	menus.DELETE("/:id", middleware.JwtAuthMiddleware(), menuController.DeleteMenu)
 
 	port := os.Getenv("PORT")
 	if port == "" {
