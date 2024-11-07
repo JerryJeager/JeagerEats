@@ -12,6 +12,7 @@ import (
 
 type RiderStore interface {
 	UpdateRider(ctx context.Context, userID uuid.UUID, rider *models.RiderUpdate) error
+	UpdateRiderProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error
 }
 
 type RiderRepo struct {
@@ -28,4 +29,8 @@ func (r *RiderRepo) UpdateRider(ctx context.Context, userID uuid.UUID, rider *mo
 		return errors.New("rider not found")
 	}
 	return nil
+}
+
+func (r *RiderRepo) UpdateRiderProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
+	return config.Session.WithContext(ctx).Model(&models.Rider{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
 }

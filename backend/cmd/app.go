@@ -47,8 +47,9 @@ func ExecuteApiRoutes() {
 	menus.GET("/:id", menuController.GetMenuByID)
 	menus.DELETE("/:id", middleware.JwtAuthMiddleware(), menuController.DeleteMenu)
 	menus.PATCH("/:id", middleware.JwtAuthMiddleware(), menuController.UpdateMenu)
-	
+
 	riders.PATCH("", middleware.JwtAuthMiddleware(), riderController.UpdateRider)
+	riders.PATCH("/profile/img", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), riderController.UpdateRiderProfileImg)
 
 	port := os.Getenv("PORT")
 	if port == "" {

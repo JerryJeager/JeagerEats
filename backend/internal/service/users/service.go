@@ -3,7 +3,6 @@ package users
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/JerryJeager/JeagerEats/internal/service/restaurants"
@@ -61,7 +60,6 @@ func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, s
 	if err := models.VerifyPassword(user.Password, u.Password); err != nil {
 		return "", "", err
 	}
-	fmt.Println("user role in service: ", u.Role)
 	token, err := utils.GenerateToken(u.ID, &restaurant.ID, u.Role)
 	if err != nil {
 		return "", "", err

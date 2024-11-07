@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS riders (
     vehicle_type VARCHAR(255),
     license_number VARCHAR(255),
     is_active BOOLEAN,
-    profile_img VARCHAR(255),
+    profile_img VARCHAR,
     opening_time TIMESTAMPTZ,
     closing_time TIMESTAMPTZ,
     current_latitude DECIMAL(10,8),
