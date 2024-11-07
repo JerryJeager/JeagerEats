@@ -24,8 +24,7 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
-		c.Set("user_id", id) 
+		c.Set("user_id", id)
 		c.Set("role", role)
 		c.Set("restaurant_id", restaurantID)
 

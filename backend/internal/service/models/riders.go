@@ -21,3 +21,14 @@ type Rider struct {
 	UpdatedAt        time.Time  `json:"updated_at"`
 	DeletedAt        *time.Time `json:"deleted_at"`
 }
+
+type RiderUpdate struct {
+	VehicleType      string     `json:"vehicle_type"`
+	LicenseNumber    string     `json:"license_number"`
+	OpeningTime      time.Time  `json:"opening_time"`
+	ClosingTime      time.Time  `json:"closing_time"`
+	CurrentLatitude  float64    `json:"current_latitude"`
+	CurrentLongitude float64    `json:"current_longitude"`
+	IsActive         bool       `json:"is_active"`
+}
+
