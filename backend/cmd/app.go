@@ -12,6 +12,7 @@ import (
 var userController = manualwire.GetUserController()
 var restaurantController = manualwire.GetRestaurantController()
 var menuController = manualwire.GetMenuController()
+var riderController = manualwire.GetRiderController()
 
 func ExecuteApiRoutes() {
 	router := gin.Default()
@@ -28,6 +29,7 @@ func ExecuteApiRoutes() {
 	users := api.Group("/users")
 	restaurants := api.Group("/restaurants")
 	menus := api.Group("menus")
+	riders := api.Group("riders")
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
@@ -45,6 +47,9 @@ func ExecuteApiRoutes() {
 	menus.GET("/:id", menuController.GetMenuByID)
 	menus.DELETE("/:id", middleware.JwtAuthMiddleware(), menuController.DeleteMenu)
 	menus.PATCH("/:id", middleware.JwtAuthMiddleware(), menuController.UpdateMenu)
+
+	riders.PATCH("", middleware.JwtAuthMiddleware(), riderController.UpdateRider)
+	riders.PATCH("/profile/img", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), riderController.UpdateRiderProfileImg)
 
 	port := os.Getenv("PORT")
 	if port == "" {
