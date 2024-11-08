@@ -3,7 +3,7 @@ import logo from "../../public/assets/logo.png"
 import Link from "next/link"
 const Header = () => {
   return (
-    <header className="px-[5%] lg:px-[10%] py-4 lg:py-6 flex items-center justify-between">
+    <header className="px-[5%] lg:px-[8%] py-4 lg:py-6 flex items-center justify-between">
         <div>
             <Link href={"/"}> <Image src={logo} placeholder="blur" alt="logo" width={140} /></Link>
         </div>

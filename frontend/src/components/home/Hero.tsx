@@ -10,14 +10,14 @@ const pacifico = Pacifico({
   weight: ["400"],
 });
 
-const comforta = Comfortaa({
+export const comforta = Comfortaa({
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
 const Hero = () => {
   return (
-    <section className="px-[5%] lg:px-[10%] py-14 lg:py-20 bg-hero flex flex-col lg:flex-row justify-between">
+    <section className="px-[5%] lg:px-[8%] py-14 lg:py-20 bg-hero flex flex-col lg:flex-row justify-between">
       <div className="lg:w-2/3">
         <p className={`${pacifico.className} text-sm`}>Fast & Reliable Food Delivery</p>
         <h1 className={`${comforta.className} text-white text-3xl lg:text-6xl font-black mt-2`}>
