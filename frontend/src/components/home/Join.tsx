@@ -4,7 +4,7 @@ import JoinCards from "../JoinCards";
 
 const Join = () => {
   return (
-    <section className="px-[5%] lg:px-[8%] py-4 lg:py-6 mt-4">
+    <section className="px-[5%] lg:px-[8%] py-4 lg:pt-10 lg:pb-14 mt-4">
       <h2
         className={`text-2xl lg:text-4xl mb-8 lg:mb-10 text-primary ${comforta.className} text-center`}
       >

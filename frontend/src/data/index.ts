@@ -11,6 +11,10 @@ export type Join = {
     icon: StaticImageData
     color: string 
 }
+export type Restaurant = {
+    name: string 
+    link: string 
+}
 
 export const JoinData: Join[] = [
     {
@@ -36,5 +40,28 @@ export const JoinData: Join[] = [
         link: "", 
         icon: cutlery, 
         color: "#CDE7FF"
+    },
+]
+
+export const restaurants: Restaurant[] = [
+    {
+        name: "Zaddy's Place",
+        link:  ""
+    },
+    {
+        name: "Bistro",
+        link:  ""
+    },
+    {
+        name: "Chitis",
+        link:  ""
+    },
+    {
+        name: "Achla",
+        link:  ""
+    },
+    {
+        name: "Basmati",
+        link:  ""
     },
 ]
