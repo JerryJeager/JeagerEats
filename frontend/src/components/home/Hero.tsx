@@ -4,7 +4,7 @@ import spag from "../../../public/assets/spag.png";
 import bikeman from "../../../public/assets/bikeman.png";
 import Image from "next/image";
 
-const pacifico = Pacifico({
+export const pacifico = Pacifico({
   subsets: ["latin"],
   display: "swap",
   weight: ["400"],
