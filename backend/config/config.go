@@ -57,7 +57,8 @@ func LoadEnv() {
 
 	if err != nil {
 		fmt.Println(err)
-		log.Fatal("failed to load environment variables")
+		fmt.Println("failed to load envirionment variables")
+		// log.Fatal("failed to load environment variables")
 	}
 }
 
