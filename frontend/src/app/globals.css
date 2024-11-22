@@ -2,3 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.box {
+  --mask:
+    radial-gradient(222.03px at 50% 314px,#000 99%,#0000 101%) calc(50% - 314px) 0/628px 100%,
+    radial-gradient(222.03px at 50% -157px,#0000 99%,#000 101%) 50% 157px/628px 100% repeat-x;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
+}
+.box2 {
+  --mask:
+    linear-gradient(94deg, rgba(255,165,0,1) 0%, rgba(255,102,0,1) 100%) repeat-x;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
+}
+
+.padx{
+    @apply px-[5%] md:px-[8%];
+}
+
+.vendor-form input{
+    @apply w-full rounded-lg p-2 md:p-3 outline-none border-primary border caret-primary;
+}
