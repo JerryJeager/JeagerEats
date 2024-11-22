@@ -3,6 +3,9 @@ import { BASE_URL } from "@/data";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Spinner from "../ui/Spinner";
+import { Role } from "@/types";
+
+const role: Role = { name: "vendor" };
 
 interface FormData {
   first_name: string;
@@ -11,6 +14,7 @@ interface FormData {
   address: string;
   password: string;
   phone_number: string;
+  role: string;
 }
 
 const VendorForm = () => {
@@ -21,6 +25,7 @@ const VendorForm = () => {
     last_name: "",
     password: "",
     phone_number: "",
+    role: role.name,
   };
   const [formData, setFormData] = useState<FormData>({ ...formDataDefault });
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,7 +43,7 @@ const VendorForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("")
+    setError("");
     setFormData((prev) => {
       const trimmedData: FormData = { ...formDataDefault };
       for (const key in prev) {
@@ -71,7 +76,7 @@ const VendorForm = () => {
       }
     } finally {
       setIsLoading(false);
-      setError("")
+      setError("");
     }
   };
   return (
