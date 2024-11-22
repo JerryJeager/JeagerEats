@@ -23,7 +23,7 @@ export const JoinData: Join[] = [
         title: "Earn with Flexibility", 
         content: "Deliver with us and earn whenever you want. Flexibility meets opportunity", 
         cta: "Sign up as a Rider",
-        link: "", 
+        link: "auth/rider", 
         icon: bike,
         color: "#FFE5CC"
     },
