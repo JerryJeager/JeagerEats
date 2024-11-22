@@ -3,7 +3,7 @@ import shop from "../../public/assets/shop.png"
 import cutlery from "../../public/assets/cutlery.png"
 import { StaticImageData } from "next/image"
 
-export const BASE_URL = "https://jeagereats-production.up.railway.app/"
+export const BASE_URL = "https://jeagereats-production.up.railway.app/api/v1"
 
 export type Join = {
     title: string 
