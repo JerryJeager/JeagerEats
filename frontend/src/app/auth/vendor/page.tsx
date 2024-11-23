@@ -15,7 +15,7 @@ const Vendor = () => {
         <div className="padx flex justify-between gap-8 relative  z-20">
           <Image
             src={chef}
-            className="rounded-2xl shadow-xl hidden md:block"
+            className="rounded-2xl h-fit shadow-xl hidden md:block"
             alt="chef image"
           />
           <VendorForm />

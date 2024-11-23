@@ -24,3 +24,16 @@
 .vendor-form input{
     @apply w-full rounded-lg p-2 md:p-3 outline-none border-primary border caret-primary;
 }
+
+input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none; /* Removes the default toggle in Edge */
+  }
+
+  input[type="password"]::-webkit-textfield-decoration-container {
+    display: none; /* Removes the default toggle in WebKit browsers like Chrome */
+  }
+
+  input[type="password"] {
+    appearance: none; /* For general styling reset */
+  }

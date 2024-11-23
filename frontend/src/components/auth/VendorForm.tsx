@@ -1,9 +1,17 @@
 "use client";
 import { BASE_URL, BASE_URL_LOCAL } from "@/data";
 import axios from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from "react";
 import Spinner from "../ui/Spinner";
 import { Role } from "@/types";
+import { LuEye, LuEyeOff } from "react-icons/lu";
+import { useRouter } from "next/navigation";
 
 const role: Role = { name: "vendor" };
 
@@ -18,6 +26,7 @@ interface FormData {
 }
 
 const VendorForm = () => {
+  const router = useRouter();
   const formDataDefault: FormData = {
     first_name: "",
     address: "",
@@ -31,6 +40,13 @@ const VendorForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const [isConfirmPasswordShown, setIsConfirmPasswordShown] = useState(false);
+  const handleTogglePasswordShown = (
+    setP: Dispatch<SetStateAction<boolean>>
+  ) => {
+    setP((prev) => !prev);
+  };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     setFormData((prev) => {
@@ -62,18 +78,22 @@ const VendorForm = () => {
     try {
       const res = await axios.post(`${BASE_URL}/users/signup`, formData);
       console.log("User signed up successfully:", res.data);
+      router.push("auth/login")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          setError(error?.response?.data?.message)
-          console.log(error?.response?.data?.message)
-          console.error("Error Response:", error.response.data);
-          console.error("Status Code:", error.response.status);
+          setError(error?.response?.data?.message);
+          //   console.log(error?.response?.data?.message);
+          //   console.error("Error Response:", error.response.data);
+          //   console.error("Status Code:", error.response.status);
           setError(error.response.data?.message);
-        } else if (error.request) {
-          console.error("Error Request:", error.request);
-        } else {
-          console.error("Error Message:", error.message);
+        }
+        // } else if (error.request) {
+        //   console.error("Error Request:", error.request);
+        // }
+        else {
+          //   console.error("Error Message:", error.message);
+          setError("Network Error");
         }
       }
     } finally {
@@ -85,7 +105,7 @@ const VendorForm = () => {
       onSubmit={handleSubmit}
       className="rounded-2xl w-full md:w-1/2 bg-white shadow-xl p-6 vendor-form"
     >
-      <div className="flex flex-col gap-4 md:gap-8">
+      <div className="flex flex-col gap-4 md:gap-6">
         <div className="flex flex-col md:flex-row gap-4">
           <label htmlFor="" className="w-full">
             <p>First Name</p>
@@ -147,24 +167,44 @@ const VendorForm = () => {
         </label>
         <label htmlFor="">
           <p>Password</p>
-          <input
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            type="text"
-            required
-            placeholder="password"
-          />
+          <div className="relative">
+            <input
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              type={isPasswordShown ? "text" : "password"}
+              required
+              placeholder="password"
+            />
+            <button
+              type="button"
+              onClick={() => handleTogglePasswordShown(setIsPasswordShown)}
+              className="absolute right-2 md:right-3 bottom-3"
+            >
+              {isPasswordShown ? <LuEye /> : <LuEyeOff />}
+            </button>
+          </div>
         </label>
         <label htmlFor="">
           <p>Confirm Password</p>
-          <input
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            name="confirm_password"
-            type="text"
-            placeholder="password"
-          />
+          <div className="relative">
+            <input
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              name="confirm_password"
+              type={isConfirmPasswordShown ? "text" : "password"}
+              placeholder="password"
+            />
+            <button
+              type="button"
+              onClick={() =>
+                handleTogglePasswordShown(setIsConfirmPasswordShown)
+              }
+              className="absolute right-2 md:right-3 bottom-3"
+            >
+              {isConfirmPasswordShown ? <LuEye /> : <LuEyeOff />}
+            </button>
+          </div>
         </label>
         {error && <p className="text-red-500">{error}</p>}
         <button className="w-full rounded-lg text-white font-semibold text-center bg-primary p-2 md:p-3">
