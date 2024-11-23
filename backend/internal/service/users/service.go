@@ -12,7 +12,8 @@ import (
 
 type UserSv interface {
 	CreateUser(ctx context.Context, user *models.User) (string, error)
-	Login(ctx context.Context, user *models.UserLogin) (string, string, error)
+	Login(ctx context.Context, user *models.UserLogin) (string, string, string, error)
+	GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error)
 }
 
 type UserServ struct {
@@ -45,24 +46,28 @@ func (s *UserServ) CreateUser(ctx context.Context, user *models.User) (string, e
 	return id.String(), s.repo.CreateUser(ctx, user, &restaurant, &rider)
 }
 
-func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, string, error) {
+func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, string, string, error) {
 	u, err := s.repo.GetUserByEmail(ctx, user.Email)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	var restaurant *models.Restaurant = &models.Restaurant{}
 	if u.Role == models.VENDOR {
 		restaurant, err = restaurants.GetRestaurant(ctx, u.ID)
 		if err != nil {
-			return "", "", err
+			return "", "", "", err
 		}
 	}
 	if err := models.VerifyPassword(user.Password, u.Password); err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	token, err := utils.GenerateToken(u.ID, &restaurant.ID, u.Role)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
-	return u.ID.String(), token, nil
+	return u.ID.String(), token, u.Role, nil
+}
+
+func (s *UserServ) GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error) {
+	return s.repo.GetUser(ctx, userID)
 }

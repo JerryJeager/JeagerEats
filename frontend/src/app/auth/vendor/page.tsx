@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import wave from "../../../../public/assets/wave.svg";
 import Image from "next/image";
 import chef from "../../../../public/assets/chef.png";
-import VendorForm from "@/components/auth/VendorForm";
+import SignupForm from "@/components/auth/SignupForm";
 
 const Vendor = () => {
   return (
@@ -18,7 +18,7 @@ const Vendor = () => {
             className="rounded-2xl h-fit shadow-xl hidden md:block"
             alt="chef image"
           />
-          <VendorForm />
+          <SignupForm name="vendor" />
         </div>
       </section>
       <div className="absolute bottom-0 w-full z-10">

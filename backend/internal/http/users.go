@@ -6,6 +6,7 @@ import (
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/JerryJeager/JeagerEats/internal/service/users"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type UserController struct {
@@ -37,10 +38,34 @@ func (c *UserController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	id, token, err := c.serv.Login(ctx, &user)
+	id, token, role, err := c.serv.Login(ctx, &user)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Login failed", "error": err.Error()})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid email or password", "error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "User logged in successfully", "id": id, "token": token})
+	ctx.JSON(http.StatusOK, gin.H{"message": "User logged in successfully", "id": id, "token": token, "role": role})
+}
+
+func (c *UserController) GetUser(ctx *gin.Context) {
+	userIDCtx, err := GetUserID(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	userID, err := uuid.Parse(userIDCtx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := c.serv.GetUser(ctx, userID)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	
+	ctx.JSON(http.StatusOK, *user)
 }

@@ -5,12 +5,14 @@ import (
 
 	"github.com/JerryJeager/JeagerEats/config"
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type UserStore interface {
 	CreateUser(ctx context.Context, user *models.User, restaurant *models.Restaurant, rider *models.Rider) error
 	GetUserByEmail(ctx context.Context, email string) (*models.User, error)
+	GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error)
 }
 
 type UserRepo struct {
@@ -45,6 +47,14 @@ func (r *UserRepo) CreateUser(ctx context.Context, user *models.User, restaurant
 func (r *UserRepo) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User
 	if err := config.Session.Where("email = ?", email).First(&user).WithContext(ctx).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (r *UserRepo) GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error) {
+	var user models.User
+	if err := config.Session.Where("id = ?", userID).First(&user).WithContext(ctx).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

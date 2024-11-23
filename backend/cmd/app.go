@@ -33,6 +33,7 @@ func ExecuteApiRoutes() {
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
+	users.GET("", middleware.JwtAuthMiddleware(), userController.GetUser)
 
 	restaurants.PATCH("/profile", middleware.JwtAuthMiddleware(), restaurantController.UpdateRestaurant)
 	restaurants.PATCH("/profile/img", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), restaurantController.UpdateRestaurantProfileImg)

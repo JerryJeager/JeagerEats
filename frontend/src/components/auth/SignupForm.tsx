@@ -13,7 +13,7 @@ import { Role } from "@/types";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 
-const role: Role = { name: "vendor" };
+
 
 interface FormData {
   first_name: string;
@@ -25,8 +25,9 @@ interface FormData {
   role: string;
 }
 
-const VendorForm = () => {
+const SignupForm = ({name} : Role) => {
   const router = useRouter();
+  const role = name
   const formDataDefault: FormData = {
     first_name: "",
     address: "",
@@ -34,7 +35,7 @@ const VendorForm = () => {
     last_name: "",
     password: "",
     phone_number: "",
-    role: role.name,
+    role: role,
   };
   const [formData, setFormData] = useState<FormData>({ ...formDataDefault });
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -215,4 +216,4 @@ const VendorForm = () => {
   );
 };
 
-export default VendorForm;
+export default SignupForm;
