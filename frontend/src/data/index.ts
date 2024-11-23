@@ -4,6 +4,7 @@ import cutlery from "../../public/assets/cutlery.png"
 import { StaticImageData } from "next/image"
 
 export const BASE_URL = "https://jeagereats-production.up.railway.app/api/v1"
+export const BASE_URL_LOCAL = "http://localhost:8080/api/v1"
 
 export type Join = {
     title: string 

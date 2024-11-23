@@ -1,5 +1,5 @@
 "use client";
-import { BASE_URL } from "@/data";
+import { BASE_URL, BASE_URL_LOCAL } from "@/data";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Spinner from "../ui/Spinner";
@@ -65,6 +65,8 @@ const VendorForm = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
+          setError(error?.response?.data?.message)
+          console.log(error?.response?.data?.message)
           console.error("Error Response:", error.response.data);
           console.error("Status Code:", error.response.status);
           setError(error.response.data?.message);
@@ -76,7 +78,6 @@ const VendorForm = () => {
       }
     } finally {
       setIsLoading(false);
-      setError("");
     }
   };
   return (
@@ -166,7 +167,7 @@ const VendorForm = () => {
           />
         </label>
         {error && <p className="text-red-500">{error}</p>}
-        <button className="w-full mt-3 md:mt-4 rounded-lg text-white font-semibold text-center bg-primary p-2 md:p-3">
+        <button className="w-full rounded-lg text-white font-semibold text-center bg-primary p-2 md:p-3">
           {!isLoading ? "Register" : <Spinner bg="primary" />}
         </button>
       </div>
