@@ -16,7 +16,7 @@ const Rider = () => {
           <RiderForm />
           <Image
             src={rider}
-            className="rounded-2xl shadow-xl hidden md:block"
+            className="rounded-2xl h-fit shadow-xl hidden md:block"
             alt="chef image"
           />
         </div>
