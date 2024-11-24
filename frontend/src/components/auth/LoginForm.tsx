@@ -11,7 +11,7 @@ import {
 import Spinner from "../ui/Spinner";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
-import { storeCookie } from "@/actions/handleCookies";
+import { deleteCookie, storeCookie } from "@/actions/handleCookies";
 import { Role, Roles } from "@/types";
 
 interface FormData {
@@ -45,6 +45,8 @@ const LoginForm = () => {
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await deleteCookie("jeagereats_user_id")
+    await deleteCookie("jeagereats_token")
     setIsLoading(true);
     setError("");
     setFormData((prev) => {
