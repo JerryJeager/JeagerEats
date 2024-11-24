@@ -1,7 +1,9 @@
 package models
 
 import (
+	// "fmt"
 	"html"
+	"log"
 	"strings"
 	"time"
 
@@ -34,12 +36,12 @@ const (
 	RIDER    = "rider"
 )
 
-
 func IsValidRole(role string) bool {
 	return role == CUSTOMER || role == VENDOR || role == RIDER
 }
 
 func (user *User) HashPassword() error {
+	log.Print(user.Email, user.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
 	if err != nil {
@@ -53,6 +55,7 @@ func (user *User) HashPassword() error {
 }
 
 func VerifyPassword(password, hashedPassword string) error {
+	// fmt.log("password: ", password)
+	log.Print(password)
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
-
