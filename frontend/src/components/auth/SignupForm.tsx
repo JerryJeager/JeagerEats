@@ -13,7 +13,6 @@ import { Role } from "@/types";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 
-
 interface FormData {
   first_name: string;
   last_name: string;
@@ -24,9 +23,9 @@ interface FormData {
   role: string;
 }
 
-const SignupForm = ({name} : Role) => {
+const SignupForm = ({ name }: Role) => {
   const router = useRouter();
-  const role = name
+  const role = name;
   const formDataDefault: FormData = {
     first_name: "",
     address: "",
@@ -76,15 +75,15 @@ const SignupForm = ({name} : Role) => {
     }
 
     try {
-      const res = await axios.post(`${BASE_URL()}/users/signup`, formData);
+      const baseurl = BASE_URL();
+      const res = await axios.post(`${baseurl}/users/signup`, formData);
       console.log("User signed up successfully:", res.data);
-      router.push("/auth/login")
+      router.push("/auth/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(error?.response?.data?.message);
-        }
-        else {
+        } else {
           setError("Network Error");
         }
       }

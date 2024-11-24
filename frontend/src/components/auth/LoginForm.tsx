@@ -13,7 +13,6 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { deleteCookie, storeCookie } from "@/actions/handleCookies";
 import { Role, Roles } from "@/types";
-import Getenv from "@/actions/getenv";
 
 interface FormData {
   email: string;
