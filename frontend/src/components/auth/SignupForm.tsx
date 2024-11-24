@@ -1,5 +1,5 @@
 "use client";
-import { BASE_URL, BASE_URL_LOCAL } from "@/data";
+import { BASE_URL } from "@/data";
 import axios from "axios";
 import {
   ChangeEvent,
@@ -77,7 +77,7 @@ const SignupForm = ({name} : Role) => {
     }
 
     try {
-      const res = await axios.post(`${BASE_URL}/users/signup`, formData);
+      const res = await axios.post(`${BASE_URL()}/users/signup`, formData);
       console.log("User signed up successfully:", res.data);
       router.push("auth/login")
     } catch (error) {
