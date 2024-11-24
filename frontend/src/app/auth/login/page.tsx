@@ -16,7 +16,7 @@ const Login = () => {
           <Image
             src={serve}
             placeholder="blur"
-            className="rounded-2xl h-fit shadow-xl hidden md:block"
+            className="rounded-2xl w-1/2 h-fit shadow-xl hidden md:block"
             alt="chef image"
           />
           <LoginForm />
