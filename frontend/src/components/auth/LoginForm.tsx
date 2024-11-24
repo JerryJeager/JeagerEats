@@ -1,5 +1,5 @@
 "use client";
-import { BASE_URL, BASE_URL_LOCAL } from "@/data";
+import { BASE_URL } from "@/data";
 import axios from "axios";
 import {
   ChangeEvent,
@@ -57,7 +57,7 @@ const LoginForm = () => {
     });
 
     try {
-      const res = await axios.post(`${BASE_URL}/users/login`, formData);
+      const res = await axios.post(`${BASE_URL()}/users/login`, formData);
       console.log("User logged in successfully:", res.data);
       if (res.status == 200) {
         await storeCookie("jeagereats_user_id", res.data?.id);

@@ -1,4 +1,4 @@
-import { BASE_URL, BASE_URL_LOCAL } from "@/data";
+import { BASE_URL } from "@/data";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { Roles } from "./types";
@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    let res = await axios.get(`${BASE_URL}/users`, {
+    let res = await axios.get(`${BASE_URL()}/users`, {
       headers: {
         Authorization: `Bearer ${accessToken.value}`,
       },
