@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import wave from "../../../../public/assets/wave.svg";
 import Image from "next/image";
-import chef from "../../../../public/assets/chef.png";
+import serve from "../../../../public/assets/serve.jpg"
 import LoginForm from "@/components/auth/LoginForm";
 
 const Login = () => {
@@ -14,7 +14,7 @@ const Login = () => {
         </h2>
         <div className="padx flex flex-row-reverse justify-between gap-8 relative  z-20">
           <Image
-            src={chef}
+            src={serve}
             placeholder="blur"
             className="rounded-2xl h-fit shadow-xl hidden md:block"
             alt="chef image"
