@@ -7,7 +7,7 @@ const Header = () => {
         <div>
             <Link href={"/"}> <Image src={logo} placeholder="blur" alt="logo" width={140} /></Link>
         </div>
-        <Link href={"auth/login"}>
+        <Link href={"/auth/login"}>
             <button className="bg-primary py-2 px-8 rounded-lg text-white">Login</button>
         </Link>
     </header>

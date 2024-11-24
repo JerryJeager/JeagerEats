@@ -14,7 +14,6 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 
 
-
 interface FormData {
   first_name: string;
   last_name: string;
@@ -79,21 +78,13 @@ const SignupForm = ({name} : Role) => {
     try {
       const res = await axios.post(`${BASE_URL()}/users/signup`, formData);
       console.log("User signed up successfully:", res.data);
-      router.push("auth/login")
+      router.push("/auth/login")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(error?.response?.data?.message);
-          //   console.log(error?.response?.data?.message);
-          //   console.error("Error Response:", error.response.data);
-          //   console.error("Status Code:", error.response.status);
-          setError(error.response.data?.message);
         }
-        // } else if (error.request) {
-        //   console.error("Error Request:", error.request);
-        // }
         else {
-          //   console.error("Error Message:", error.message);
           setError("Network Error");
         }
       }
