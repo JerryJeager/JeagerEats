@@ -11,6 +11,8 @@ import {
 import Spinner from "../ui/Spinner";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import { storeCookie } from "@/actions/handleCookies";
+import { Role, Roles } from "@/types";
 
 interface FormData {
   email: string;
@@ -55,23 +57,23 @@ const LoginForm = () => {
     });
 
     try {
-      const res = await axios.post(`${BASE_URL_LOCAL}/users/login`, formData);
+      const res = await axios.post(`${BASE_URL}/users/login`, formData);
       console.log("User logged in successfully:", res.data);
-    //   router.push("auth/login");
+      if (res.status == 200) {
+        await storeCookie("jeagereats_user_id", res.data?.id);
+        await storeCookie("jeagereats_token", res.data?.token);
+        const role: Roles = res.data?.role as Roles;
+        role == "rider"
+          ? router.push("/dashboard/rider")
+          : role == "vendor"
+          ? router.push("/dashboard/vendor")
+          : router.push("/shop");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(error?.response?.data?.message);
-          //   console.log(error?.response?.data?.message);
-          //   console.error("Error Response:", error.response.data);
-          //   console.error("Status Code:", error.response.status);
-          setError(error.response.data?.message);
-        }
-        // } else if (error.request) {
-        //   console.error("Error Request:", error.request);
-        // }
-        else {
-          //   console.error("Error Message:", error.message);
+        } else {
           setError("Network Error");
         }
       }
