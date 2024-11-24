@@ -120,7 +120,7 @@ const LoginForm = () => {
         </label>
         {error && <p className="text-red-500">{error}</p>}
         <button className="w-full rounded-lg text-white font-semibold text-center bg-primary p-2 md:p-3">
-          {!isLoading ? "Register" : <Spinner bg="primary" />}
+          {!isLoading ? "Login" : <Spinner bg="primary" />}
         </button>
       </div>
     </form>
