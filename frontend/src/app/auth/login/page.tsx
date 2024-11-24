@@ -1,8 +1,8 @@
 import Header from "@/components/Header";
 import wave from "../../../../public/assets/wave.svg";
 import Image from "next/image";
-import serve from "../../../../public/assets/serve.jpg"
 import LoginForm from "@/components/auth/LoginForm";
+import welcome from "../../../../public/assets/welcome.jpg"
 
 const Login = () => {
   return (
@@ -14,9 +14,9 @@ const Login = () => {
         </h2>
         <div className="padx flex flex-row-reverse justify-between gap-8 relative  z-20">
           <Image
-            src={serve}
+            src={welcome}
             placeholder="blur"
-            className="rounded-2xl w-1/2 h-fit shadow-xl hidden md:block"
+            className="rounded-2xl w-1/2 h-[600px] shadow-xl hidden md:block"
             alt="chef image"
           />
           <LoginForm />
