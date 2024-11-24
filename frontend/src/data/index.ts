@@ -4,9 +4,12 @@ import cutlery from "../../public/assets/cutlery.png";
 import { StaticImageData } from "next/image";
 
 export const BASE_URL = () => {
-  return process.env.NEXT_PUBLIC_ENVIRONMENT == "production"
-    ? "https://jeagereats-production.up.railway.app/api/v1"
-    : "http://localhost:8080/api/v1";
+  const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
+  const baseUrl =
+    environment === "production"
+      ? "https://jeagereats-production.up.railway.app/api/v1"
+      : "http://localhost:8080/api/v1";
+  return baseUrl;
 };
 
 export type Join = {

@@ -12,7 +12,7 @@ const Login = () => {
         <h2 className="text-2xl md:text-4xl font-bold  padx mb-3">
           Welcome Back!
         </h2>
-        <div className="padx flex flex-row-reverse justify-between gap-8 relative  z-20">
+        <div className="padx flex flex-row-reverse justify-between gap-8 relative z-20">
           <Image
             src={welcome}
             placeholder="blur"

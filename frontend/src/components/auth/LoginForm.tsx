@@ -13,6 +13,7 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { deleteCookie, storeCookie } from "@/actions/handleCookies";
 import { Role, Roles } from "@/types";
+import Getenv from "@/actions/getenv";
 
 interface FormData {
   email: string;
@@ -45,8 +46,8 @@ const LoginForm = () => {
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await deleteCookie("jeagereats_user_id")
-    await deleteCookie("jeagereats_token")
+    await deleteCookie("jeagereats_user_id");
+    await deleteCookie("jeagereats_token");
     setIsLoading(true);
     setError("");
     setFormData((prev) => {
@@ -59,7 +60,8 @@ const LoginForm = () => {
     });
 
     try {
-      const res = await axios.post(`${BASE_URL()}/users/login`, formData);
+      const baseurl = BASE_URL();
+      const res = await axios.post(`${baseurl}/users/login`, formData);
       console.log("User logged in successfully:", res.data);
       if (res.status == 200) {
         await storeCookie("jeagereats_user_id", res.data?.id);
