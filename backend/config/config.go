@@ -36,7 +36,7 @@ func ConnectToDB() {
 	} else {
 		//production DB config:::
 		connectionString := os.Getenv("CONNECTION_STRING")
-		db, err = gorm.Open(postgres.Open(connectionString), &gorm.Config{PrepareStmt: true})
+		db, err = gorm.Open(postgres.Open(connectionString), &gorm.Config{})
 	}
 
 	if err != nil {
@@ -46,7 +46,7 @@ func ConnectToDB() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Restaurant{})
 	db.AutoMigrate(&models.Rider{})
-	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true, PrepareStmt: true})
+	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true})
 	if Session != nil {
 		fmt.Println("success: created db session")
 	}
