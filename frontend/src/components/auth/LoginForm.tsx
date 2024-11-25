@@ -49,15 +49,15 @@ const LoginForm = () => {
     await deleteCookie("jeagereats_token");
     setIsLoading(true);
     setError("");
-    setFormData((prev) => {
-      const trimmedData: FormData = { ...formDataDefault };
-      for (const key in prev) {
-        trimmedData[key as keyof FormData] =
-          prev[key as keyof FormData]?.trim();
-      }
-      return trimmedData;
-    });
-
+    // setFormData((prev) => {
+    //   const trimmedData: FormData = { ...formDataDefault };
+    //   for (const key in prev) {
+    //     trimmedData[key as keyof FormData] =
+    //       prev[key as keyof FormData]?.trim();
+    //   }
+    //   return trimmedData;
+    // });
+    // console.log(formData.password, formData.email)
     try {
       const baseurl = BASE_URL();
       const res = await axios.post(`${baseurl}/users/login`, formData);
