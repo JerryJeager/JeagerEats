@@ -22,3 +22,15 @@ func GetRole(ctx context.Context) (string, error) {
 func GetRestaurantID(ctx context.Context) (string, error) {
 	return ctx.Value("restaurant_id").(string), nil
 }
+
+type ErrorJson struct {
+	Message string `json:"message"`
+	Error   string `json:"error"`
+}
+
+func GetErrorJson(err error, message string) *ErrorJson{
+	return &ErrorJson{
+		Message: message,
+		Error: err.Error(),
+	}
+}

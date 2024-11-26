@@ -31,6 +31,7 @@ func ExecuteApiRoutes() {
 	restaurants := api.Group("/restaurants")
 	menus := api.Group("menus")
 	riders := api.Group("riders")
+	categories := api.Group("categories")
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
@@ -52,6 +53,8 @@ func ExecuteApiRoutes() {
 
 	riders.PATCH("", middleware.JwtAuthMiddleware(), riderController.UpdateRider)
 	riders.PATCH("/profile/img", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), riderController.UpdateRiderProfileImg)
+
+	categories.POST("", category.CreateCategory)
 
 	port := os.Getenv("PORT")
 	if port == "" {

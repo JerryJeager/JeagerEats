@@ -1,8 +1,15 @@
 package categories
 
-import "gorm.io/gorm"
+import (
+	"context"
+
+	"github.com/JerryJeager/JeagerEats/config"
+	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	"gorm.io/gorm"
+)
 
 type CategoryStore interface {
+	CreateCategory(ctx context.Context, category *models.Category) error
 }
 
 type CategoryRepo struct {
@@ -11,4 +18,8 @@ type CategoryRepo struct {
 
 func NewCategoryRepo(client *gorm.DB) *CategoryRepo {
 	return &CategoryRepo{client: client}
+}
+
+func (r *CategoryRepo) CreateCategory(ctx context.Context, category *models.Category) error {
+	return config.Session.WithContext(ctx).Create(category).Error
 }
