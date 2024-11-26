@@ -52,21 +52,21 @@ func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, s
     user.Password = strings.TrimSpace(user.Password)
 	u, err := s.repo.GetUserByEmail(ctx, user.Email)
 	if err != nil {
-		return "", "", "", errors.New("debugging: error came from get email in service")
+		return "", "", "", err
 	}
 	var restaurant *models.Restaurant = &models.Restaurant{}
 	if u.Role == models.VENDOR {
 		restaurant, err = restaurants.GetRestaurant(ctx, u.ID)
 		if err != nil {
-			return "", "", "", errors.New("debugging: error came from get restaurant in service")
+			return "", "", "", err
 		}
 	}
 	if err := models.VerifyPassword(user.Password, u.Password); err != nil {
-		return "", "", "", errors.New("debuggin: error came from verify password in service")
+		return "", "", "", err
 	}
 	token, err := utils.GenerateToken(u.ID, &restaurant.ID, u.Role)
 	if err != nil {
-		return "", "", "", errors.New("debugging: error came from genreate token in service")
+		return "", "", "", err
 	}
 	return u.ID.String(), token, u.Role, nil
 }
