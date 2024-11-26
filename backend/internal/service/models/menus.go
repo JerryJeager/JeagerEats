@@ -9,6 +9,7 @@ import (
 type Menu struct {
 	ID           uuid.UUID `json:"id"`
 	RestaurantID uuid.UUID `json:"restaurant_id"`
+	CategoryID   uuid.UUID `json:"category_id"`
 	Name         string    `json:"name"`
 	Description  string    `json:"description"`
 	Price        float64   `json:"price"`
@@ -24,11 +25,10 @@ type Menu struct {
 type Menus []Menu
 
 type MenuUpdate struct {
-	Name         string  `json:"name"`
-	Description  string  `json:"description"`
-	Price        float64 `json:"price"`
-	IsAvailable  bool    `json:"is_available"`
-	Stock        int     `json:"stock"`
-	Category     string  `json:"category"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Price       float64   `json:"price"`
+	IsAvailable bool      `json:"is_available"`
+	Stock       int       `json:"stock"`
+	CategoryID  uuid.UUID `json:"category_id"`
 }
-

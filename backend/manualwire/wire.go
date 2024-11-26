@@ -3,6 +3,7 @@ package manualwire
 import (
 	"github.com/JerryJeager/JeagerEats/config"
 	"github.com/JerryJeager/JeagerEats/internal/http"
+	"github.com/JerryJeager/JeagerEats/internal/service/categories"
 	"github.com/JerryJeager/JeagerEats/internal/service/menus"
 	"github.com/JerryJeager/JeagerEats/internal/service/restaurants"
 	"github.com/JerryJeager/JeagerEats/internal/service/riders"
@@ -64,4 +65,19 @@ func GetMenuController() *http.MenuController {
 	repo := GetMenuRepository()
 	service := GetMenuService(repo)
 	return http.NewMenuController(service)
+}
+
+func GetCategoryRepository() *categories.CategoryRepo {
+	repo := config.GetSession()
+	return categories.NewCategoryRepo(repo)
+}
+
+func GetCategoryService(repo categories.CategoryStore) *categories.CategoryServ {
+	return categories.NewCategoryService(repo)
+}
+
+func GetCategoryController() *http.CategoryController {
+	repo := GetCategoryRepository()
+	service := GetCategoryService(repo)
+	return http.NewCategoryController(service)
 }

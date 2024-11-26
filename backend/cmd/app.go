@@ -13,6 +13,7 @@ var userController = manualwire.GetUserController()
 var restaurantController = manualwire.GetRestaurantController()
 var menuController = manualwire.GetMenuController()
 var riderController = manualwire.GetRiderController()
+var category = manualwire.GetCategoryController()
 
 func ExecuteApiRoutes() {
 	router := gin.Default()
