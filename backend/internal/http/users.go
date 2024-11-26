@@ -66,6 +66,6 @@ func (c *UserController) GetUser(ctx *gin.Context) {
 		})
 		return
 	}
-	
+
 	ctx.JSON(http.StatusOK, *user)
 }
