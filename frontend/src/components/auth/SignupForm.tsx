@@ -59,14 +59,14 @@ const SignupForm = ({ name }: Role) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    // setFormData((prev) => {
-    //   const trimmedData: FormData = { ...formDataDefault };
-    //   for (const key in prev) {
-    //     trimmedData[key as keyof FormData] =
-    //       prev[key as keyof FormData]?.trim();
-    //   }
-    //   return trimmedData;
-    // });
+    setFormData((prev) => {
+      const trimmedData: FormData = { ...formDataDefault };
+      for (const key in prev) {
+        trimmedData[key as keyof FormData] =
+          prev[key as keyof FormData]?.trim();
+      }
+      return trimmedData;
+    });
 
     if (formData.password !== confirmPassword) {
       setError("password mismatch");
