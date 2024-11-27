@@ -1,4 +1,3 @@
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { Roles } from "./types";
 
@@ -15,12 +14,17 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    let res = await axios.get(`${baseurl}/users`, {
+    let req = await fetch(`${baseurl}/users`, {
       headers: {
         Authorization: `Bearer ${accessToken.value}`,
       },
     });
-    const role: Roles = res?.data?.role;
+
+    if (req.status != 200) {
+      throw new Error("unauthorized");
+    }
+    const data = await req.json();
+    const role: Roles = data?.role;
     if (role && !request.url.includes(role)) {
       return NextResponse.redirect(new URL("/auth/login", request.url));
     }

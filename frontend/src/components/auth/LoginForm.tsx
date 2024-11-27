@@ -61,11 +61,12 @@ const LoginForm = () => {
     try {
       const baseurl = BASE_URL();
       const res = await axios.post(`${baseurl}/users/login`, formData);
-      console.log("User logged in successfully:", res.data);
+      // console.log("User logged in successfully:", res.data);
       if (res.status == 200) {
         await storeCookie("jeagereats_user_id", res.data?.id);
         await storeCookie("jeagereats_token", res.data?.token);
         const role: Roles = res.data?.role as Roles;
+        // console.log(role)
         role == "rider"
           ? router.push("/dashboard/rider")
           : role == "vendor"

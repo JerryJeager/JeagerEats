@@ -2,6 +2,10 @@ import bike from "../../public/assets/Motorcycle.png";
 import shop from "../../public/assets/shop.png";
 import cutlery from "../../public/assets/cutlery.png";
 import { StaticImageData } from "next/image";
+import { VendorDashboarNav } from "@/types";
+import { IoHome } from "react-icons/io5";
+import { FaUser } from "react-icons/fa";
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 
 export const BASE_URL = () => {
   const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
@@ -76,4 +80,14 @@ export const restaurants: Restaurant[] = [
     name: "Basmati",
     link: "",
   },
+];
+
+export const vendorDashboardNav: VendorDashboarNav[] = [
+  { name: "Home", link: "/dashboard/vendor", icon: IoHome },
+  {
+    name: "Menu Management",
+    link: "/dashboard/vendor/menu",
+    icon: MdOutlineRestaurantMenu,
+  },
+  { name: "Profile", link: "/dashboard/vendor/profile", icon: FaUser },
 ];
