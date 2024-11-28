@@ -10,6 +10,7 @@ import (
 func init() {
 	config.LoadEnv()
 	config.ConnectToDB()
+	config.ConnectToRedis()
 }
 
 func main() {

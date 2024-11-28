@@ -1,18 +1,22 @@
 package config
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var Session *gorm.DB
+var RedisClient *redis.Client
+
 
 func GetSession() *gorm.DB {
 	return Session
@@ -46,11 +50,11 @@ func ConnectToDB() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Restaurant{})
 	db.AutoMigrate(&models.Rider{})
-	db.AutoMigrate(&models.Menu{}) 
-	
+	db.AutoMigrate(&models.Menu{})
+
 	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true})
 	if Session != nil {
-		fmt.Println("success: created db session")
+		log.Print("success: created db session")
 	}
 }
 
@@ -58,8 +62,8 @@ func LoadEnv() {
 	err := godotenv.Load()
 
 	if err != nil {
-		fmt.Println(err)
-		fmt.Println("failed to load envirionment variables")
+		log.Print(err)
+		log.Print("failed to load envirionment variables")
 		// log.Fatal("failed to load environment variables")
 	}
 }
@@ -75,4 +79,30 @@ func SetupCloudinary() (*cloudinary.Cloudinary, error) {
 	}
 
 	return cld, nil
+}
+
+func ConnectToRedis() {
+	environment := os.Getenv("ENVIRONMENT")
+	if environment == "development" {
+		//local development redis config:::
+		RedisClient = redis.NewClient(&redis.Options{
+			Addr:     "localhost:6379",
+			Password: "",
+			DB:       0,
+		})
+	} else {
+		//production redis config:::
+		RedisClient = redis.NewClient(&redis.Options{
+			Addr:     os.Getenv("REDIS_ADDR"),
+			Password: os.Getenv("REDIS_PASSWORD"),
+			DB:       0,
+		})
+	}
+
+	pong, err := RedisClient.Ping(context.Background()).Result()
+	if err != nil {
+		log.Print("failed to connect to redis instance")
+		return
+	}
+	log.Printf("%s: redis instance connected", pong)
 }
