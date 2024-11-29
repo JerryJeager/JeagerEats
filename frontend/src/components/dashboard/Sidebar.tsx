@@ -48,7 +48,7 @@ const Sidebar = () => {
       {/* hamburger menu icon */}
       <div
         onClick={handleClickedHamburger}
-        className={`mt-8 ml-4 cursor-pointer top-0 lg:hidden ${
+        className={`mt-8 ml-4 cursor-pointer top-0 md:hidden ${
           isHamburgerClicked ? "z-20 fixed" : "absolute"
         }`}
       >
