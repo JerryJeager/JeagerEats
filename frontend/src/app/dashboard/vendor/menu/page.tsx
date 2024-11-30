@@ -2,15 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import item from "../../../../../public/assets/jollof.png";
 import { MdEdit } from "react-icons/md";
+import empty from "../../../../../public/assets/empty.svg"
 
 const Menu = () => {
   return (
     <section className="mt-8 min-h-screen">
       <h2 className="font-bold text-2xl md:text-3xl text-center">
-        Menu Management{" "}
+        Menu Management
       </h2>
       <div className="rounded-lg w-full mt-8 p-4 md:p-8 shadow-lg bg-white  h-full md:text-lg ">
         <div className="flex flex-col items-center">
+            <Image width={300} src={empty} alt="empty illustration" />
           <p className="text-center">You've not added any menu item yet</p>
           <Link
             href={"/dashboard/vendor/menu/add"}
@@ -28,7 +30,9 @@ const Menu = () => {
               <Image width={120} src={item} alt="item-image" />
               <div className="flex flex-col w-[170px]">
                 <p className="font-medium">A Plate of Rice with Chicken</p>
-                <p className="line-clamp-1 text-black text-opacity-70">1 plate of jollof rice, fried rice, plantain and chicken</p>
+                <p className="line-clamp-1 text-black text-opacity-70">
+                  1 plate of jollof rice, fried rice, plantain and chicken
+                </p>
                 <div className="flex gap-2 mt-auto">
                   <p className="mb-0">$4000</p>
                   <div className="flex items-center text-primary">
