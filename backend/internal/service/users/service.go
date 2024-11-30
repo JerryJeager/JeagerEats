@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
-	"github.com/JerryJeager/JeagerEats/internal/service/restaurants"
 	"github.com/JerryJeager/JeagerEats/internal/utils"
 	"github.com/google/uuid"
 )
@@ -49,14 +48,14 @@ func (s *UserServ) CreateUser(ctx context.Context, user *models.User) (string, e
 
 func (s *UserServ) Login(ctx context.Context, user *models.UserLogin) (string, string, string, error) {
 	user.Email = strings.TrimSpace(user.Email)
-    user.Password = strings.TrimSpace(user.Password)
+	user.Password = strings.TrimSpace(user.Password)
 	u, err := s.repo.GetUserByEmail(ctx, user.Email)
 	if err != nil {
 		return "", "", "", err
 	}
 	var restaurant *models.Restaurant = &models.Restaurant{}
 	if u.Role == models.VENDOR {
-		restaurant, err = restaurants.GetRestaurant(ctx, u.ID)
+		restaurant, err = s.repo.GetRestaurant(ctx, u.ID)
 		if err != nil {
 			return "", "", "", err
 		}

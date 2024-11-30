@@ -9,12 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var userController = manualwire.GetUserController()
-var restaurantController = manualwire.GetRestaurantController()
-var menuController = manualwire.GetMenuController()
-var riderController = manualwire.GetRiderController()
-var category = manualwire.GetCategoryController()
-
 func ExecuteApiRoutes() {
 	router := gin.Default()
 
@@ -25,6 +19,12 @@ func ExecuteApiRoutes() {
 			"message": "Welcome to JeagerEats",
 		})
 	})
+
+	userController := manualwire.GetUserController()
+	restaurantController := manualwire.GetRestaurantController()
+	menuController := manualwire.GetMenuController()
+	riderController := manualwire.GetRiderController()
+	category := manualwire.GetCategoryController()
 
 	api := router.Group("/api/v1")
 	users := api.Group("/users")

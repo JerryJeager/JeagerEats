@@ -3,7 +3,6 @@ package models
 import (
 	// "fmt"
 	"html"
-	"log"
 	"strings"
 	"time"
 
@@ -42,7 +41,6 @@ func IsValidRole(role string) bool {
 
 func (user *User) HashPassword() error {
 	user.Password = html.EscapeString(strings.TrimSpace(user.Password))
-	log.Print(user.Email, user.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
 	if err != nil {
@@ -56,8 +54,6 @@ func (user *User) HashPassword() error {
 }
 
 func VerifyPassword(password, hashedPassword string) error {
-	// fmt.log("password: ", password)
-	log.Print(password)
 	password = html.EscapeString(strings.TrimSpace(password))
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }

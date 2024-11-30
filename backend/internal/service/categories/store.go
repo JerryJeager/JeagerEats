@@ -3,7 +3,6 @@ package categories
 import (
 	"context"
 
-	"github.com/JerryJeager/JeagerEats/config"
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"gorm.io/gorm"
 )
@@ -21,5 +20,5 @@ func NewCategoryRepo(client *gorm.DB) *CategoryRepo {
 }
 
 func (r *CategoryRepo) CreateCategory(ctx context.Context, category *models.Category) error {
-	return config.Session.WithContext(ctx).Create(category).Error
+	return r.client.WithContext(ctx).Create(category).Error
 }

@@ -26,20 +26,20 @@ func NewRestaurantRepo(client *gorm.DB) *RestaurantRepo {
 }
 
 func (r *RestaurantRepo) UpdateRestaurant(ctx context.Context, userID uuid.UUID, restaurant *models.RestaurantUpdate) error {
-	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Updates(restaurant).Error
+	return r.client.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Updates(restaurant).Error
 }
 
 func (r *RestaurantRepo) UpdateRestaurantProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
-	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
+	return r.client.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
 }
 
 func (r *RestaurantRepo) UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive bool) error {
-	return config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("is_active", isActive).Error
+	return r.client.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).Update("is_active", isActive).Error
 }
 
 func (r *RestaurantRepo) GetRestaurantPublicProfile(ctx context.Context, id uuid.UUID) (*models.Restaurant, error) {
 	var restaurant models.Restaurant
-	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("id = ?", id).First(&restaurant).Error; err != nil {
+	if err := r.client.WithContext(ctx).Model(&models.Restaurant{}).Where("id = ?", id).First(&restaurant).Error; err != nil {
 		return nil, err
 	}
 	return &restaurant, nil
@@ -48,13 +48,13 @@ func (r *RestaurantRepo) GetRestaurantPublicProfile(ctx context.Context, id uuid
 func (r *RestaurantRepo) GetAllRestaurantPublicProfile(ctx context.Context) (*models.RestaurantPublicProfileList, error) {
 	var res []models.Restaurant
 	var restaurants models.RestaurantPublicProfileList
-	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Find(&res).Scan(&restaurants).Error; err != nil {
+	if err := r.client.WithContext(ctx).Model(&models.Restaurant{}).Find(&res).Scan(&restaurants).Error; err != nil {
 		return nil, err
 	}
 	return &restaurants, nil
 }
 
-func GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error) {
+func  GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error) {
 	var restaurant models.Restaurant
 	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).First(&restaurant).Error; err != nil {
 		return nil, err

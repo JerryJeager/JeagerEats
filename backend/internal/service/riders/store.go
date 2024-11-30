@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/JerryJeager/JeagerEats/config"
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -24,7 +23,7 @@ func NewRiderRepo(client *gorm.DB) *RiderRepo {
 }
 
 func (r *RiderRepo) UpdateRider(ctx context.Context, userID uuid.UUID, rider *models.RiderUpdate) error {
-	qry := config.Session.WithContext(ctx).Model(&models.Rider{}).Where("user_id = ?", userID).Updates(rider)
+	qry := r.client.WithContext(ctx).Model(&models.Rider{}).Where("user_id = ?", userID).Updates(rider)
 	if qry.RowsAffected == 0 {
 		return errors.New("rider not found")
 	}
@@ -32,5 +31,5 @@ func (r *RiderRepo) UpdateRider(ctx context.Context, userID uuid.UUID, rider *mo
 }
 
 func (r *RiderRepo) UpdateRiderProfileImg(ctx context.Context, userID uuid.UUID, filePath string) error {
-	return config.Session.WithContext(ctx).Model(&models.Rider{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
+	return r.client.WithContext(ctx).Model(&models.Rider{}).Where("user_id = ?", userID).Update("profile_img", filePath).Error
 }

@@ -19,6 +19,7 @@ var RedisClient *redis.Client
 
 
 func GetSession() *gorm.DB {
+	
 	return Session
 }
 
