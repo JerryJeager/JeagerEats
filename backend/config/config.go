@@ -52,7 +52,7 @@ func ConnectToDB() {
 	db.AutoMigrate(&models.Rider{})
 	db.AutoMigrate(&models.Menu{})
 
-	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true, PrepareStmt: true})
+	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true, PrepareStmt: false})
 	if Session != nil {
 		log.Print("success: created db session")
 	}
