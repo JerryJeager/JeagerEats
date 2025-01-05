@@ -15,6 +15,7 @@ type RestaurantStore interface {
 	UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive bool) error
 	GetRestaurantPublicProfile(ctx context.Context, id uuid.UUID) (*models.Restaurant, error)
 	GetAllRestaurantPublicProfile(ctx context.Context) (*models.RestaurantPublicProfileList, error)
+	GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error)
 }
 
 type RestaurantRepo struct {
@@ -55,6 +56,14 @@ func (r *RestaurantRepo) GetAllRestaurantPublicProfile(ctx context.Context) (*mo
 }
 
 func  GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error) {
+	var restaurant models.Restaurant
+	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).First(&restaurant).Error; err != nil {
+		return nil, err
+	}
+	return &restaurant, nil
+}
+
+func (r *RestaurantRepo)  GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error) {
 	var restaurant models.Restaurant
 	if err := config.Session.WithContext(ctx).Model(&models.Restaurant{}).Where("user_id = ?", userID).First(&restaurant).Error; err != nil {
 		return nil, err

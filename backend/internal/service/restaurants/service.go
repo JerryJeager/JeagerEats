@@ -13,6 +13,7 @@ type RestaurantSv interface {
 	UpdateRestaurantIsActive(ctx context.Context, userID uuid.UUID, isActive *models.IsActive) error
 	GetRestaurantPublicProfile(ctx context.Context, id uuid.UUID) (*models.RestaurantPublicProfile, error)
 	GetAllRestaurantPublicProfile(ctx context.Context) (*models.RestaurantPublicProfileList, error)
+	GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error)
 }
 
 type RestaurantServ struct {
@@ -58,3 +59,6 @@ func (s *RestaurantServ) GetAllRestaurantPublicProfile(ctx context.Context) (*mo
 	return s.repo.GetAllRestaurantPublicProfile(ctx)
 }
 
+func (s *RestaurantServ) GetRestaurant(ctx context.Context, userID uuid.UUID) (*models.Restaurant, error){
+	return s.repo.GetRestaurant(ctx, userID)
+}

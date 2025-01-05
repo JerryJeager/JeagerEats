@@ -42,6 +42,7 @@ func ExecuteApiRoutes() {
 	restaurants.PATCH("/active", middleware.JwtAuthMiddleware(), restaurantController.UpdateRestaurantIsActive)
 	restaurants.GET("/:id", restaurantController.GetRestaurantPublicProfile)
 	restaurants.GET("", restaurantController.GetAllRestaurantPublicProfile)
+	restaurants.GET("/self", middleware.JwtAuthMiddleware(), restaurantController.GetRestaurant)
 
 	menus.POST("", middleware.JwtAuthMiddleware(), menuController.CreateMenu)
 	menus.PATCH("/img/:id", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), menuController.UpdateMenuImage)

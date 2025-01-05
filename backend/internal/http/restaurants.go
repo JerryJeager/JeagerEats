@@ -123,3 +123,19 @@ func (c *RestaurantController) GetAllRestaurantPublicProfile(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, *restaurants)
 }
+
+func (c *RestaurantController) GetRestaurant(ctx *gin.Context){
+	vendor, err := GetVendor(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	restaurant, err := c.serv.GetRestaurant(ctx, *&vendor.UserID)
+	if err != nil{
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, restaurant)
+}
