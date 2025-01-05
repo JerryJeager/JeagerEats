@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	// "github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
@@ -48,10 +48,10 @@ func ConnectToDB() {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Restaurant{})
-	db.AutoMigrate(&models.Rider{})
-	db.AutoMigrate(&models.Menu{})
+	// db.AutoMigrate(&models.User{})
+	// db.AutoMigrate(&models.Restaurant{})
+	// db.AutoMigrate(&models.Rider{})
+	// db.AutoMigrate(&models.Menu{})
 
 	Session = db.Session(&gorm.Session{SkipDefaultTransaction: true, PrepareStmt: false})
 	if Session != nil {
