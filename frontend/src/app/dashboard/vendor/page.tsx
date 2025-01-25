@@ -1,10 +1,31 @@
+"use client";
 import Image from "next/image";
 import profile from "../../../../public/assets/chef.png";
 import Link from "next/link";
 import { MdEdit } from "react-icons/md";
 import item from "../../../../public/assets/jollof.png";
+import { useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "@/data";
+import { getCookie } from "@/actions/handleCookies";
 
 const VendorDashboard = () => {
+  useEffect(() => {
+    const getRestaurantData = async () => {
+      try {
+        const accessToken = await getCookie("jeagereats_token");
+        const res = await axios.get(`${BASE_URL()}/restaurants/self`, {
+          headers: {
+            Authorization: `Bearer ${accessToken?.value}`,
+          },
+        });
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRestaurantData();
+  }, []);
   return (
     <section className="mt-8">
       <h2 className="font-bold text-2xl md:text-3xl text-center">Welcome</h2>
