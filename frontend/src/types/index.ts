@@ -53,3 +53,10 @@ export type RestaurantSelf = {
   closing_time: string 
   created_at: string 
 }
+
+export type MenuItem = {
+  name: string 
+  description: string 
+  price: number 
+  stock: number
+}

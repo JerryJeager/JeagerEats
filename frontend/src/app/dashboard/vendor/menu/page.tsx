@@ -13,7 +13,7 @@ const Menu = () => {
       <div className="rounded-lg w-full mt-8 p-4 md:p-8 shadow-lg bg-white  h-full md:text-lg ">
         <div className="flex flex-col items-center">
           <Image width={300} src={empty} alt="empty illustration" />
-          <p className="text-center">You've not added any menu item yet</p>
+          <p className="text-center">Add more food items to your store</p>
           <Link
             href={"/dashboard/vendor/menu/add"}
             className="p-2 md:p-3 w-[220px] mt-6 mx-auto text-center bg-primary text-white rounded-lg"
