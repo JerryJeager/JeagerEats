@@ -1,3 +1,4 @@
+import { StaticImageData } from "next/image";
 import { IconType } from "react-icons";
 
 export type Roles = "customer" | "vendor" | "rider";
@@ -70,4 +71,16 @@ export type MenuItemCardType = {
   img_url: string;
   stock: number;
   category: string;
+};
+
+export type CategoryCardType = {
+  color: string;
+  image: StaticImageData;
+  name: string;
+};
+
+export type RestaurantCardType = {
+  id: string;
+  name: string;
+  image: StaticImageData;
 };

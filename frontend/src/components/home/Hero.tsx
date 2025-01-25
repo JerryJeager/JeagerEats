@@ -3,6 +3,7 @@ import jollof from "../../../public/assets/jollof.png";
 import spag from "../../../public/assets/spag.png";
 import bikeman from "../../../public/assets/bikeman.png";
 import Image from "next/image";
+import Link from "next/link";
 
 export const pacifico = Pacifico({
   subsets: ["latin"],
@@ -20,10 +21,10 @@ const Hero = () => {
     <section className="px-[5%] lg:px-[8%] py-14 lg:py-20 bg-hero flex flex-col lg:flex-row justify-between">
       <div className="lg:w-2/3">
         <p className={`${pacifico.className} text-sm`}>Fast & Reliable Food Delivery</p>
-        <h1 className={`${comforta.className} text-white text-3xl lg:text-6xl font-black mt-2`}>
+        <h1 className={`${comforta.className} text-white text-3xl lg:text-6xl font-black mt-2 mb-6`}>
           Get your favorite dishes delivered at lightning speed, so you can focus on what truly matters
         </h1>
-        <button className="bg-white rounded-lg border-black border-2 lg:border-4 text-primary text-lg py-2 px-8 mt-6 font-semibold">Order Now</button>
+        <Link href={"/shop"} className="bg-white rounded-lg border-black border-2 lg:border-4 text-primary text-lg py-2 px-8 mt-6 font-semibold">Order Now</Link>
       </div>
       <div className="mt-4 lg:mt-0">
         <div className="flex self-end">

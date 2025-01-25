@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,5 +11,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main className="bg-[#FFF1EA] relative pb-8">{children}</main>;
+  return (
+    <main className="relative pb-8">
+      <div className="shadow-md">
+        <Header />
+      </div>
+      {children}
+    </main>
+  );
 }

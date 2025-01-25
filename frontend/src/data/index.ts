@@ -2,10 +2,21 @@ import bike from "../../public/assets/Motorcycle.png";
 import shop from "../../public/assets/shop.png";
 import cutlery from "../../public/assets/cutlery.png";
 import { StaticImageData } from "next/image";
-import { VendorDashboarNav } from "@/types";
+import { CategoryCardType, RestaurantCardType, VendorDashboarNav } from "@/types";
 import { IoHome } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+
+import africameals from "../../public/assets/africameals.webp";
+import drinks from "../../public/assets/drinks.webp";
+import fitfam from "../../public/assets/fitfam.webp";
+import localMarket from "../../public/assets/local-market.svg"
+import restaurantH from "../../public/assets/restaurantH.webp";
+import supermarket from "../../public/assets/supermarket.webp";
+
+import demofood from "../../public/assets/demofood.jpg"
+import foodt1 from "../../public/assets/foodt1.jpg"
+import foodt2 from "../../public/assets/foodt2.jpg"
 
 export const BASE_URL = () => {
   const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
@@ -53,7 +64,7 @@ export const JoinData: Join[] = [
     content:
       "Get your favorite meals delivered fast. Simple, easy, and reliable.",
     cta: "Order Now",
-    link: "",
+    link: "shop",
     icon: cutlery,
     color: "#CDE7FF",
   },
@@ -91,3 +102,79 @@ export const vendorDashboardNav: VendorDashboarNav[] = [
   },
   { name: "Profile", link: "/dashboard/vendor/profile", icon: FaUser },
 ];
+
+export const categoriesCards: CategoryCardType[] = [
+  {
+    color: "#ffeaf1",
+    image: restaurantH,
+    name: "Restaurants",
+  },
+  {
+    color: "#fff3ed",
+    image: supermarket,
+    name: "Supermarkets",
+  },
+  {
+    color: "#dcf7ed",
+    image: localMarket,
+    name: "Local Markets",
+  },
+  {
+    color: "#fff8e4",
+    image: africameals,
+    name: "African Meals",
+  },
+  {
+    color: "#daefe3",
+    image: fitfam,
+    name: "Fit Fam",
+  },
+  {
+    color: "#fff8e4",
+    image: drinks,
+    name: "Drinks",
+  },
+];
+
+export const allRestaurants: RestaurantCardType[] = [
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: demofood,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: foodt1,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: demofood,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: demofood,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: foodt2,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: demofood,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: demofood,
+  },
+  {
+    id: "1",
+    name: "Zaddy's Place",
+    image: foodt1,
+  },
+]
