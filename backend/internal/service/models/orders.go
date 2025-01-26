@@ -40,3 +40,9 @@ type Item struct {
 	UpdatedAt    time.Time  `json:"updated_at"`
 	DeletedAt    *time.Time `json:"deleted_at"`
 }
+
+type MenuOrderSummary struct {
+	Name     string  `json:"name"`
+	Quantity int     `json:"quantity"`
+	Price    float64 `json:"price"`
+}

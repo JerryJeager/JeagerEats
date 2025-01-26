@@ -4,11 +4,16 @@ import (
 	"context"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type OrderStore interface {
 	CreateOrder(ctx context.Context, order *models.Order, items *[]models.Item) error
+
+	GetMenu(ctx context.Context, menuID uuid.UUID) (*models.Menu, error)
+
+	GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error)
 }
 
 type OrderRepo struct {
@@ -39,4 +44,20 @@ func (r *OrderRepo) CreateOrder(ctx context.Context, order *models.Order, items 
 		return err
 	}
 	return nil
+}
+
+func (r *OrderRepo) GetMenu(ctx context.Context, menuID uuid.UUID) (*models.Menu, error) {
+	var menu models.Menu
+	if err := r.client.WithContext(ctx).Where("id = ?", menuID).First(&menu).Error; err != nil {
+		return nil, err
+	}
+	return &menu, nil
+}
+
+func (r *OrderRepo) GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error) {
+	var user models.User
+	if err := r.client.WithContext(ctx).Where("id = ?", userID).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
