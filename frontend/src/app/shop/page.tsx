@@ -1,11 +1,33 @@
+"use client";
 import CategoryCard from "@/components/shop/CategoryCard";
-import { allRestaurants, categoriesCards } from "@/data";
+import { BASE_URL, categoriesCards } from "@/data";
 import foodt1 from "../../../public/assets/foodt1.jpg";
 import foodt2 from "../../../public/assets/foodt2.jpg";
 import Image from "next/image";
 import RestaurantCard from "@/components/shop/RestaurantCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { RestaurantCardType } from "@/types";
 
 const Shop = () => {
+  const [allRestaurants, setAllRestaurants] = useState<RestaurantCardType[]>();
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get(`${BASE_URL()}/restaurants`);
+        setAllRestaurants(res.data as RestaurantCardType[]);
+        console.log(res.data)
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
   return (
     <>
       <section className="px-[5%] lg:px-[8%] py-8">
@@ -42,9 +64,11 @@ const Shop = () => {
             gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
           }}
         >
-          {allRestaurants.map((r, index) => (
-            <RestaurantCard key={index} {...r} />
-          ))}
+          {allRestaurants &&
+            allRestaurants.length > 0 &&
+            allRestaurants.map((r, index) => (
+              <RestaurantCard key={index} {...r} />
+            ))}
         </div>
       </section>
     </>

@@ -136,81 +136,81 @@ export const categoriesCards: CategoryCardType[] = [
   },
 ];
 
-export const allRestaurants: RestaurantCardType[] = [
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: demofood,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: foodt1,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: demofood,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: demofood,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: foodt2,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: demofood,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: demofood,
-  },
-  {
-    id: "1",
-    name: "Zaddy's Place",
-    image: foodt1,
-  },
-]
+// export const allRestaurants: RestaurantCardType[] = [
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: demofood,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: foodt1,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: demofood,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: demofood,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: foodt2,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: demofood,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: demofood,
+//   },
+//   {
+//     id: "1",
+//     name: "Zaddy's Place",
+//     image: foodt1,
+//   },
+// ]
 
-export const menuItemsDummyData: RestaurantMenuCardType[] = [
-  {
-    id: "1",
-    name: "Asun Fried Rice",
-    description: "Asun Rice",
-    image: demofood,
-    price: 500,
-    stock: 14,
-  },
-  {
-    id: "1",
-    name: "Asun Fried Rice",
-    description: "Asun Rice",
-    image: foodt1,
-    price: 500,
-    stock: 14,
-  },
-  {
-    id: "1",
-    name: "Asun Fried Rice",
-    description: "Asun Rice",
-    image: foodt2,
-    price: 500,
-    stock: 14,
-  },
-  {
-    id: "1",
-    name: "Asun Fried Rice",
-    description: "Asun Rice",
-    image: demofood,
-    price: 500,
-    stock: 14,
-  },
+// export const menuItemsDummyData: RestaurantMenuCardType[] = [
+//   {
+//     id: "1",
+//     name: "Asun Fried Rice",
+//     description: "Asun Rice",
+//     image: demofood,
+//     price: 500,
+//     stock: 14,
+//   },
+//   {
+//     id: "1",
+//     name: "Asun Fried Rice",
+//     description: "Asun Rice",
+//     image: foodt1,
+//     price: 500,
+//     stock: 14,
+//   },
+//   {
+//     id: "1",
+//     name: "Asun Fried Rice",
+//     description: "Asun Rice",
+//     image: foodt2,
+//     price: 500,
+//     stock: 14,
+//   },
+//   {
+//     id: "1",
+//     name: "Asun Fried Rice",
+//     description: "Asun Rice",
+//     image: demofood,
+//     price: 500,
+//     stock: 14,
+//   },
   
-]
+// ]

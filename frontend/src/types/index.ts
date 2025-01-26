@@ -82,15 +82,40 @@ export type CategoryCardType = {
 export type RestaurantCardType = {
   id: string;
   name: string;
-  image: StaticImageData;
+  description: string;
+  address: string;
+  profile_img: string;
+  rating: number;
+  is_active: boolean;
+  cuisine_type: string;
+  opening_time: string;
+  closing_time: string;
+  created_at: string;
+  updated_at: string;
 };
 
-
 export type RestaurantMenuCardType = {
-  id: string; 
-  name: string; 
-  description: string
-  price: number
-  stock: number 
-  image: StaticImageData
+  id: string;
+  restaurant_id: string;
+  name: string;
+  description: string;
+  price: number;
+  is_available: boolean;
+  img_url: string;
+  stock: number;
+  category: string;
+  quantity: number
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+};
+
+export type PlaceOrderType = {
+  restaurant_id: string 
+  total_price: number
+  items: {
+    menu_id: string 
+    price_per_item: number 
+    quantity: number
+  }[]
 }
