@@ -5,6 +5,7 @@ import (
 	"github.com/JerryJeager/JeagerEats/internal/http"
 	"github.com/JerryJeager/JeagerEats/internal/service/categories"
 	"github.com/JerryJeager/JeagerEats/internal/service/menus"
+	"github.com/JerryJeager/JeagerEats/internal/service/orders"
 	"github.com/JerryJeager/JeagerEats/internal/service/restaurants"
 	"github.com/JerryJeager/JeagerEats/internal/service/riders"
 	"github.com/JerryJeager/JeagerEats/internal/service/users"
@@ -80,4 +81,19 @@ func GetCategoryController() *http.CategoryController {
 	repo := GetCategoryRepository()
 	service := GetCategoryService(repo)
 	return http.NewCategoryController(service)
+}
+
+func GetOrderRepository() *orders.OrderRepo {
+	repo := config.GetSession()
+	return orders.NewOrderRepo(repo)
+}
+
+func GetOrderService(repo orders.OrderStore) *orders.OrderServ {
+	return orders.NewOrderService(repo)
+}
+
+func GetOrderController() *http.OrderController {
+	repo := GetOrderRepository()
+	service := GetOrderService(repo)
+	return http.NewOrderController(service)
 }

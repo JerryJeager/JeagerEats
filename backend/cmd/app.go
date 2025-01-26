@@ -25,6 +25,7 @@ func ExecuteApiRoutes() {
 	menuController := manualwire.GetMenuController()
 	riderController := manualwire.GetRiderController()
 	category := manualwire.GetCategoryController()
+	orderController := manualwire.GetOrderController()
 
 	api := router.Group("/api/v1")
 	users := api.Group("/users")
@@ -32,6 +33,7 @@ func ExecuteApiRoutes() {
 	menus := api.Group("menus")
 	riders := api.Group("riders")
 	categories := api.Group("categories")
+	orders := api.Group("orders")
 
 	users.POST("/signup", userController.CreateUser)
 	users.POST("/login", userController.Login)
@@ -56,6 +58,8 @@ func ExecuteApiRoutes() {
 	riders.PATCH("/profile/img", middleware.JwtAuthMiddleware(), middleware.FileUploadMiddleware(), riderController.UpdateRiderProfileImg)
 
 	categories.POST("", category.CreateCategory)
+
+	orders.POST("", middleware.JwtAuthMiddleware(), orderController.CreateOrder)
 
 	port := os.Getenv("PORT")
 	if port == "" {

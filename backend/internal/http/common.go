@@ -35,3 +35,21 @@ func GetVendor(ctx *gin.Context) (*models.Vendor, error) {
 
 	return &models.Vendor{UserID: userID, Role: role, RestaurantID: &restaurantID}, nil
 }
+func GetUser(ctx *gin.Context) (*models.Vendor, error) {
+	var restaurantID uuid.UUID
+	userIDCtx, err := GetUserID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	userID, err := uuid.Parse(userIDCtx)
+	if err != nil {
+		return nil, err
+	}
+
+	role, err := GetRole(ctx)
+	if role != "customer" {
+		return nil, errors.New("unauthorized")
+	}
+
+	return &models.Vendor{UserID: userID, Role: role, RestaurantID: &restaurantID}, nil
+}

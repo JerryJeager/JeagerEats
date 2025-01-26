@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS items(
+    id uuid PRIMARY KEY,
+    order_id uuid NOT NULL REFERENCES orders(id),
+    menu_id uuid NOT NULL REFERENCES menus(id),
+    quantity INT NOT NULL, 
+    price_per_item INT,
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    deleted_at TIMESTAMPTZ
+);
