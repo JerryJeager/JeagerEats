@@ -38,6 +38,7 @@ export default function CartDialog() {
 
   const total = menu.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   const { toast } = useToast();
 
   const handleCheckout = async () => {
@@ -72,6 +73,7 @@ export default function CartDialog() {
         });
         if (res.status == 201) {
           resetCart();
+          setIsOpen(false)
           router.push("/shop");
         }
       }
@@ -96,7 +98,7 @@ export default function CartDialog() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon" className="relative">
           <div className="flex items-center justify-center p-3 bg-primary text-white rounded-full">
