@@ -84,3 +84,13 @@ export type RestaurantCardType = {
   name: string;
   image: StaticImageData;
 };
+
+
+export type RestaurantMenuCardType = {
+  id: string; 
+  name: string; 
+  description: string
+  price: number
+  stock: number 
+  image: StaticImageData
+}

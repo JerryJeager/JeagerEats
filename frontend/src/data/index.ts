@@ -2,7 +2,7 @@ import bike from "../../public/assets/Motorcycle.png";
 import shop from "../../public/assets/shop.png";
 import cutlery from "../../public/assets/cutlery.png";
 import { StaticImageData } from "next/image";
-import { CategoryCardType, RestaurantCardType, VendorDashboarNav } from "@/types";
+import { CategoryCardType, RestaurantCardType, RestaurantMenuCardType, VendorDashboarNav } from "@/types";
 import { IoHome } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
@@ -177,4 +177,40 @@ export const allRestaurants: RestaurantCardType[] = [
     name: "Zaddy's Place",
     image: foodt1,
   },
+]
+
+export const menuItemsDummyData: RestaurantMenuCardType[] = [
+  {
+    id: "1",
+    name: "Asun Fried Rice",
+    description: "Asun Rice",
+    image: demofood,
+    price: 500,
+    stock: 14,
+  },
+  {
+    id: "1",
+    name: "Asun Fried Rice",
+    description: "Asun Rice",
+    image: foodt1,
+    price: 500,
+    stock: 14,
+  },
+  {
+    id: "1",
+    name: "Asun Fried Rice",
+    description: "Asun Rice",
+    image: foodt2,
+    price: 500,
+    stock: 14,
+  },
+  {
+    id: "1",
+    name: "Asun Fried Rice",
+    description: "Asun Rice",
+    image: demofood,
+    price: 500,
+    stock: 14,
+  },
+  
 ]
