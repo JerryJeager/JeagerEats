@@ -63,8 +63,8 @@ export const JoinData: Join[] = [
     title: "Order in Seconds",
     content:
       "Get your favorite meals delivered fast. Simple, easy, and reliable.",
-    cta: "Order Now",
-    link: "shop",
+    cta: "Sign up as a Customer",
+    link: "auth/customer",
     icon: cutlery,
     color: "#CDE7FF",
   },
