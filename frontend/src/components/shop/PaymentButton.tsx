@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PaystackButton } from "react-paystack";
 
 interface PaymentButtonProps {
   email: string;
-  amount: number; 
+  amount: number;
   onSuccess: (response: any) => void;
   onClose: () => void;
 }
@@ -15,10 +15,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   onClose,
 }) => {
   const publicKey = "pk_test_ede30c5c22a7d2c64ae47446114c3464ac618a5a";
+  const [callbackUrl, setCallbackUrl] = useState("");
+  useEffect(() => {
+    setCallbackUrl(window.location.origin + "/shop");
+  }, []);
 
   const componentProps = {
     email,
-    amount, 
+    amount,
     publicKey,
     metadata: {
       custom_fields: [
@@ -38,7 +42,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       console.log("Payment closed");
       onClose();
     },
-    callback_url: `${window.location.origin}/shop`, 
+    callback_url: callbackUrl,
   };
 
   return <PaystackButton {...componentProps} />;
