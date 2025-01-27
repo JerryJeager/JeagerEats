@@ -25,6 +25,7 @@ import axios from "axios";
 import { BASE_URL } from "@/data";
 import { useRouter } from "next/navigation";
 import Spinner from "../ui/Spinner";
+import PaymentButton from "./PaymentButton";
 
 export default function CartDialog() {
   const {
@@ -38,11 +39,51 @@ export default function CartDialog() {
 
   const total = menu.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isPreCheckoutValid, setIsPreCheckoutValid] = useState(false);
   const { toast } = useToast();
+  const handlePaymentSuccess = (response: any) => {
+    console.log("Payment was successful!", response);
+    // Handle order completion logic here
+  };
+
+  const handlePaymentClose = () => {
+    console.log("Payment window was closed.");
+  };
+
+  const preCheckout = async () => {
+    setIsLoading(true);
+    setIsPreCheckoutValid(false);
+    try {
+      let accessToken = await getCookie("jeagereats_token");
+      if (!accessToken?.value) {
+        return toast({
+          title: "You're not logged in",
+          description: "You have to login inorder to checkout your items",
+          action: (
+            <ToastAction altText="Login">
+              <Link href={"/login"}>Login</Link>
+            </ToastAction>
+          ),
+        });
+      } else {
+        let res = await axios.get(`${BASE_URL()}/users`, {
+          headers: {
+            Authorization: `Bearer ${accessToken?.value}`,
+          },
+        });
+        setEmail(res?.data?.email);
+        setIsPreCheckoutValid(true);
+      }
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleCheckout = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const placeOrder: PlaceOrderType = {
       restaurant_id: menu[0]?.restaurant_id || "",
       total_price: total,
@@ -73,17 +114,20 @@ export default function CartDialog() {
         });
         if (res.status == 201) {
           resetCart();
-          setIsOpen(false)
+          setIsOpen(false);
           router.push("/shop");
         }
+        return toast({
+          title: "Payment Successful!",
+          description:
+            "Your payment has been processed successfully. Thank you for your order!",
+        });
       }
     } catch (error) {
       return toast({
         title: "Uh oh! Something went wrong.",
         description: "There was a problem with your request.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -176,14 +220,28 @@ export default function CartDialog() {
             <span className="font-medium">Total</span>
             <span className="font-medium">₦{total.toLocaleString()}</span>
           </div>
-          <Button
-            className="w-full bg-primary text-white"
-            size="lg"
-            onClick={handleCheckout}
-            disabled={isLoading || total == 0}
-          >
-            {!isLoading ? "Checkout" : <Spinner bg="primary" />}
-          </Button>
+          {!isPreCheckoutValid ? (
+            <Button
+              className="w-full bg-primary text-white"
+              size="lg"
+              onClick={preCheckout}
+              disabled={isLoading || total == 0}
+            >
+              {!isLoading ? "Checkout" : <Spinner bg="primary" />}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setIsOpen(false)}
+              className=".paystack-payment-modal  bg-primary text-white"
+            >
+              <PaymentButton
+                email={email}
+                amount={total * 100}
+                onSuccess={handleCheckout}
+                onClose={handlePaymentClose}
+              />
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>

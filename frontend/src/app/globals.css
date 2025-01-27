@@ -60,6 +60,11 @@ input[type="password"] {
   scroll-behavior: smooth; /* Optional for smooth scrolling when programmatically scrolled */
 }
 
+.paystack-payment-modal {
+  z-index: 1050 !important;
+}
+
+
 @layer base {
   :root {
     --radius:

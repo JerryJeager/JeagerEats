@@ -15,10 +15,27 @@ const useCartStore = create<Store>()(
   persist(
     (set) => ({
       menu: [],
+
       addToMenu: (menuItem: RestaurantMenuCardType) =>
-        set((state) => ({
-          menu: [...state.menu, menuItem],
-        })),
+        set((state) => {
+          const existingItem = state.menu.find((item) => item.id === menuItem.id);
+          if (existingItem) {
+            // If the item already exists, increment its quantity
+            return {
+              menu: state.menu.map((item) =>
+                item.id === menuItem.id
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item
+              ),
+            };
+          } else {
+            // If the item is new, add it to the cart with quantity set to 1
+            return {
+              menu: [...state.menu, { ...menuItem, quantity: 1 }],
+            };
+          }
+        }),
+
       removeFromMenu: (id: string) =>
         set((state) => ({
           menu: state.menu.filter((item) => item.id !== id),
@@ -28,6 +45,7 @@ const useCartStore = create<Store>()(
         set(() => ({
           menu: [],
         })),
+
       incrementQuantity: (id: string) =>
         set((state) => ({
           menu: state.menu.map((item) =>

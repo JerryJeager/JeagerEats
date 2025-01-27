@@ -1,17 +1,25 @@
 import useCartStore from "@/store/useCartStore";
 import { RestaurantMenuCardType } from "@/types";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const RestaurantMenuCard = (Props: RestaurantMenuCardType) => {
+  const { addToMenu, removeFromMenu, menu } = useCartStore((state) => state);
   const [isAdded, setIsAdded] = useState(false);
-  const {addToMenu, removeFromMenu} = useCartStore(state => state);
+
+  useEffect(() => {
+    const isItemInCart = menu.some((item) => item.id === Props.id);
+    setIsAdded(isItemInCart);
+  }, [menu, Props.id]);
+
   return (
     <div className="border rounded-md hover:shadow-md flex justify-between gap-3 flex-col-reverse p-2 md:h-[150px] md:flex-row">
       <div className="h-full flex flex-col">
         <div className="md:p-3">
           <h3 className="font-semibold">{Props.name}</h3>
-          <p className="text-sm text-black text-opacity-40">{Props.description}</p>
+          <p className="text-sm text-black text-opacity-40">
+            {Props.description}
+          </p>
         </div>
         <div className="flex flex-col md:flex-row gap-2 md:justify-between md:items-center">
           <div className="md:mt-auto md:p-3">
@@ -26,7 +34,7 @@ const RestaurantMenuCard = (Props: RestaurantMenuCardType) => {
                 <button
                   onClick={() => {
                     removeFromMenu(Props.id);
-                    setIsAdded((prev) => !prev);
+                    setIsAdded(false);
                   }}
                   className="rounded-md text-center p-1 bg-white text-primary border-primary border"
                 >
@@ -35,10 +43,9 @@ const RestaurantMenuCard = (Props: RestaurantMenuCardType) => {
               ) : (
                 <button
                   onClick={() => {
-                    let menuItem = {...Props}
-                    menuItem.quantity = 1
+                    const menuItem = { ...Props, quantity: 1 };
                     addToMenu(menuItem);
-                    setIsAdded((prev) => !prev);
+                    setIsAdded(true);
                   }}
                   className="rounded-md text-center p-1 bg-primary text-white"
                 >
