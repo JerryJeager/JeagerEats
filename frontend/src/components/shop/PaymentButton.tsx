@@ -1,5 +1,12 @@
+"use client"
 import React, { useEffect, useState } from "react";
-import { PaystackButton } from "react-paystack";
+import dynamic from 'next/dynamic';
+
+// Dynamically import PaystackButton to disable SSR
+const PaystackButton = dynamic(
+  () => import('react-paystack').then((mod) => mod.PaystackButton),
+  { ssr: false }
+);
 
 interface PaymentButtonProps {
   email: string;
@@ -16,8 +23,12 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 }) => {
   const publicKey = "pk_test_ede30c5c22a7d2c64ae47446114c3464ac618a5a";
   const [callbackUrl, setCallbackUrl] = useState("");
+
   useEffect(() => {
-    setCallbackUrl(window.location.origin + "/shop");
+    // Client-side check to ensure window is available
+    if (typeof window !== 'undefined') {
+      setCallbackUrl(window.location.origin + "/shop");
+    }
   }, []);
 
   const componentProps = {
