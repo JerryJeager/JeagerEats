@@ -12,8 +12,10 @@ type OrderStore interface {
 	CreateOrder(ctx context.Context, order *models.Order, items *[]models.Item) error
 
 	GetMenu(ctx context.Context, menuID uuid.UUID) (*models.Menu, error)
-
 	GetUser(ctx context.Context, userID uuid.UUID) (*models.User, error)
+
+	GetRiders(ctx context.Context) (*[]models.User, error)
+	GetRestaurant(ctx context.Context, restaurantID uuid.UUID) (*models.Restaurant, error)
 }
 
 type OrderRepo struct {
@@ -60,4 +62,20 @@ func (r *OrderRepo) GetUser(ctx context.Context, userID uuid.UUID) (*models.User
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (r *OrderRepo) GetRiders(ctx context.Context) (*[]models.User, error) {
+	var riders []models.User
+	if err := r.client.WithContext(ctx).Where("role = ?", models.RIDER).Find(&riders).Error; err != nil {
+		return nil, err
+	}
+	return &riders, nil
+}
+
+func (r *OrderRepo) GetRestaurant(ctx context.Context, restaurantID uuid.UUID) (*models.Restaurant, error) {
+	var restaurant models.Restaurant
+	if err := r.client.WithContext(ctx).Where("id = ?", restaurantID).First(&restaurant).Error; err != nil {
+		return nil, err
+	}
+	return &restaurant, nil
 }

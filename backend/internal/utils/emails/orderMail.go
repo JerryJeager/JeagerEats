@@ -1,4 +1,4 @@
-package mails
+package emails
 
 import (
 	"fmt"
@@ -90,7 +90,7 @@ func SendOrderSummary (orderItems []models.MenuOrderSummary) string {
                 <tr>
                     <td>%s</td>
                     <td>%d</td>
-                    <td>$%.2f</td>
+                    <td>₦%.2f</td>
                 </tr>
 `, item.Name, item.Quantity, item.Price)
 		total += item.Price * float64(item.Quantity)
@@ -100,7 +100,7 @@ func SendOrderSummary (orderItems []models.MenuOrderSummary) string {
 	emailTemplate += fmt.Sprintf(`
                 </tbody>
             </table>
-            <p class="order-total">Total: $%.2f</p>
+            <p class="order-total">Total: ₦%.2f</p>
             <p>Thank you for chosing JeagerEats</p>
         </div>
     </div>

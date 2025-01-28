@@ -32,3 +32,5 @@ type RiderUpdate struct {
 	IsActive         bool       `json:"is_active"`
 }
 
+
+type Riders []Rider
