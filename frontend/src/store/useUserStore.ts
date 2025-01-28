@@ -6,7 +6,7 @@ interface Store {
   role: Role | ""; // Default value is an empty string
   user: User | null;
   restaurant: Restaurant | null;
-//   setUser: (user: User) => void;
+  setUser: (user: User) => void;
   setRole: (role: Role) => void;
   setUserValue: (key: keyof User, value: any) => void;
   setRestaurant: (restaurant: Restaurant) => void;

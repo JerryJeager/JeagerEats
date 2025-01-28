@@ -189,7 +189,7 @@ const VendorProfileForm = () => {
           />
         </label>
         <label>
-          <p>Restaurant Phone_number</p>
+          <p>Restaurant Phone</p>
           <input
             name="phone_number"
             type="text"

@@ -5,7 +5,7 @@ import { StaticImageData } from "next/image";
 import { CategoryCardType, RestaurantCardType, RestaurantMenuCardType, VendorDashboarNav } from "@/types";
 import { IoHome } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { MdDeliveryDining, MdOutlineRestaurantMenu } from "react-icons/md";
 
 import africameals from "../../public/assets/africameals.webp";
 import drinks from "../../public/assets/drinks.webp";
@@ -101,6 +101,15 @@ export const vendorDashboardNav: VendorDashboarNav[] = [
     icon: MdOutlineRestaurantMenu,
   },
   { name: "Profile", link: "/dashboard/vendor/profile", icon: FaUser },
+];
+export const riderDashboardNav: VendorDashboarNav[] = [
+  { name: "Home", link: "/dashboard/rider", icon: IoHome },
+  {
+    name: "Delivery",
+    link: "/dashboard/rider/delivery",
+    icon: MdDeliveryDining,
+  },
+  { name: "Profile", link: "/dashboard/rider/profile", icon: FaUser },
 ];
 
 export const categoriesCards: CategoryCardType[] = [

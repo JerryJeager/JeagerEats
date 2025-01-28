@@ -51,8 +51,12 @@ const Menu = () => {
       <div className="rounded-lg w-full mt-8 p-4 md:p-8 shadow-lg h-full md:text-lg ">
         <div className="">
           <p className="text-center font-semibold">Menu Items</p>
-          <div className="flex flex-wrap gap-4">
-            {" "}
+          <div
+            className="grid"
+            style={{
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            }}
+          >
             {menuItems &&
               menuItems.map((item) => <MenuItemCard key={item.id} {...item} />)}
           </div>

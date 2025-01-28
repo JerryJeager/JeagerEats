@@ -15,7 +15,7 @@ const MenuItemCard = ({
   category,
 }: MenuItemCardType) => {
   return (
-    <div className="rounded-lg w-full  h-full md:text-lg ">
+    <div className="rounded-lg w-full md:text-lg ">
       <div className="">
         <div className="mt-2">
           <div className="flex gap-3 border border-slate-300 p-2 border-opacity-90 rounded-lg w-fit bg-white">
