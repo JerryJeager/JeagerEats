@@ -38,11 +38,14 @@ export default function CartDialog() {
   const router = useRouter();
 
   const total = menu.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const deliveryFee = total * 0.05;
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
   const [isPreCheckoutValid, setIsPreCheckoutValid] = useState(false);
   const { toast } = useToast();
+
   const handlePaymentSuccess = (response: any) => {
     console.log("Payment was successful!", response);
     // Handle order completion logic here
@@ -60,7 +63,7 @@ export default function CartDialog() {
       if (!accessToken?.value) {
         return toast({
           title: "You're not logged in",
-          description: "You have to login inorder to checkout your items",
+          description: "You have to login in order to checkout your items",
           action: (
             <ToastAction altText="Login">
               <Link href={"/login"}>Login</Link>
@@ -83,10 +86,11 @@ export default function CartDialog() {
   };
 
   const handleCheckout = async () => {
-    // setIsLoading(true);
     const placeOrder: PlaceOrderType = {
       restaurant_id: menu[0]?.restaurant_id || "",
-      total_price: total,
+      total_price: total + deliveryFee,
+      delivery_fee: deliveryFee,
+      delivery_address: deliveryAddress,
       items: menu.map((item) => ({
         menu_id: item.id,
         price_per_item: item.price,
@@ -99,7 +103,7 @@ export default function CartDialog() {
       if (!accessToken?.value) {
         return toast({
           title: "You're not logged in",
-          description: "You have to login inorder to checkout your items",
+          description: "You have to login in order to checkout your items",
           action: (
             <ToastAction altText="Login">
               <Link href={"/login"}>Login</Link>
@@ -217,26 +221,44 @@ export default function CartDialog() {
         <Separator className="my-4" />
         <div className="space-y-4">
           <div className="flex justify-between text-primary">
-            <span className="font-medium">Total</span>
+            <span className="font-medium">Subtotal</span>
             <span className="font-medium">₦{total.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between text-primary">
+            <span className="font-medium">Delivery Fee</span>
+            <span className="font-medium">₦{deliveryFee.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between text-primary">
+            <span className="font-medium">Total</span>
+            <span className="font-medium">
+              ₦{(total + deliveryFee).toLocaleString()}
+            </span>
+          </div>
+          <div className="mt-4">
+            <Input
+              placeholder="Enter delivery address"
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
+              className="w-full"
+            />
           </div>
           {!isPreCheckoutValid ? (
             <Button
               className="w-full bg-primary text-white"
               size="lg"
               onClick={preCheckout}
-              disabled={isLoading || total == 0}
+              disabled={isLoading || total == 0 || !deliveryAddress}
             >
               {!isLoading ? "Checkout" : <Spinner bg="primary" />}
             </Button>
           ) : (
             <Button
               onClick={() => setIsOpen(false)}
-              className=".paystack-payment-modal  bg-primary text-white"
+              className=".paystack-payment-modal bg-primary text-white"
             >
               <PaymentButton
                 email={email}
-                amount={total * 100}
+                amount={(total + deliveryFee) * 100}
                 onSuccess={handleCheckout}
                 onClose={handlePaymentClose}
               />

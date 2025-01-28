@@ -21,7 +21,7 @@ const MenuItemCard = ({
           <div className="flex gap-3 border border-slate-300 p-2 border-opacity-90 rounded-lg w-fit bg-white">
             <Image width={120} height={120} src={img_url} alt="item-image" />
             <div className="flex flex-col w-[170px]">
-              <p className="font-medium">A Plate of Rice with Chicken</p>
+              <p className="font-medium">{name}</p>
               <p className="line-clamp-1 text-black text-opacity-70">
                 {description}
               </p>

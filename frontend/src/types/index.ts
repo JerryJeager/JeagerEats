@@ -113,6 +113,8 @@ export type RestaurantMenuCardType = {
 export type PlaceOrderType = {
   restaurant_id: string 
   total_price: number
+  delivery_fee: number 
+  delivery_address: string
   items: {
     menu_id: string 
     price_per_item: number 
