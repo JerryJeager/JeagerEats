@@ -61,3 +61,23 @@ func (c *OrderController) AcceptOrder(ctx *gin.Context) {
 
 	ctx.Status(http.StatusOK)
 }
+
+func (c *OrderController) UdpateOrderStatus(ctx *gin.Context) {
+	var orderID OrderIDPathParam
+	if err := ctx.ShouldBindUri(&orderID); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		return
+	}
+
+	var updateOrderStatus models.OrderStatusUpdate
+	if err := ctx.ShouldBindJSON(&updateOrderStatus); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		return
+	}
+
+	if err := c.serv.UpdateOrderStatus(ctx, &updateOrderStatus, uuid.MustParse(orderID.ID)); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		return
+	}
+	ctx.Status(http.StatusOK)
+}

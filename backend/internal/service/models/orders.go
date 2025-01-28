@@ -71,3 +71,7 @@ const (
 type OrderRiderUpdate struct {
 	RiderID uuid.UUID `json:"rider_id" binding:"required"`
 }
+
+type OrderStatusUpdate struct {
+	Status string `json:"status" binding:"required"`
+}

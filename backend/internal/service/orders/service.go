@@ -16,6 +16,7 @@ import (
 type OrderSv interface {
 	CreateOrder(ctx context.Context, order *models.OrderCreate) (string, error)
 	UpdateOrderRider(ctx context.Context, orderID uuid.UUID, orderRider *models.OrderRiderUpdate) error
+	UpdateOrderStatus(ctx context.Context, orderStatusUpdate *models.OrderStatusUpdate, orderID uuid.UUID) error
 }
 
 type OrderServ struct {
@@ -133,6 +134,37 @@ func (s *OrderServ) UpdateOrderRider(ctx context.Context, orderID uuid.UUID, ord
 	return nil
 }
 
+func (s *OrderServ) UpdateOrderStatus(ctx context.Context, orderStatusUpdate *models.OrderStatusUpdate, orderID uuid.UUID) error {
+	order, err := s.repo.GetOrder(ctx, orderID)
+	if err != nil {
+		return nil
+	}
+
+	customer, err := s.repo.GetUser(ctx, order.UserID)
+	if err != nil {
+		return err
+	}
+
+	if !models.Statuses[orderStatusUpdate.Status] {
+		return errors.New("invalid status used")
+	}
+
+	if err := s.repo.UpdateOrderStatus(ctx, orderStatusUpdate, orderID); err != nil {
+		return err
+	}
+
+	if orderStatusUpdate.Status == models.INTRANSIT {
+		if err := sendInTransitMail(customer, order); err != nil {
+			fmt.Println(err)
+		}
+	} else if orderStatusUpdate.Status == models.DELIVERED {
+		if err := sendDeliveryCompleteMail(customer, order); err != nil {
+			fmt.Println(err)
+		}
+	}
+	return nil
+}
+
 func sendCustomerOrderEmail(userEmail string, menuSummary *[]models.MenuOrderSummary) error {
 
 	email := os.Getenv("EMAIL")
@@ -232,6 +264,49 @@ func sendRestaurantRiderMail(restaurant *models.Restaurant, rider *models.User, 
 	m.SetHeader("Subject", "Rider Assigned for Pickup")
 
 	m.SetBody("text/html", emails.RestaurantRiderMail(restaurant, rider, order))
+
+	d := gomail.NewDialer("smtp.gmail.com", 465, emailUsername, emailPassword)
+
+	// Send the email to user
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+	return nil
+}
+
+func sendInTransitMail(customer *models.User, order *models.Order) error {
+
+	email := os.Getenv("EMAIL")
+	emailUsername := os.Getenv("EMAILUSERNAME")
+	emailPassword := os.Getenv("EMAILPASSWORD")
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", email, "JeagerEats")
+	m.SetHeader("To", customer.Email)
+	m.SetAddressHeader("Cc", customer.Email, "JeagerEats")
+	m.SetHeader("Subject", "Your Order is On Its Way!")
+
+	m.SetBody("text/html", emails.TransitMail(customer, order))
+
+	d := gomail.NewDialer("smtp.gmail.com", 465, emailUsername, emailPassword)
+
+	// Send the email to user
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+	return nil
+}
+func sendDeliveryCompleteMail(customer *models.User, order *models.Order) error {
+
+	email := os.Getenv("EMAIL")
+	emailUsername := os.Getenv("EMAILUSERNAME")
+	emailPassword := os.Getenv("EMAILPASSWORD")
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", email, "JeagerEats")
+	m.SetHeader("To", customer.Email)
+	m.SetAddressHeader("Cc", customer.Email, "JeagerEats")
+	m.SetHeader("Subject", "Your Order Has Been Delivered!")
+
+	m.SetBody("text/html", emails.DoneDeliveryMail(customer, order))
 
 	d := gomail.NewDialer("smtp.gmail.com", 465, emailUsername, emailPassword)
 

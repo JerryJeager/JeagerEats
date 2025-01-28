@@ -61,6 +61,7 @@ func ExecuteApiRoutes() {
 
 	orders.POST("", middleware.JwtAuthMiddleware(), orderController.CreateOrder)
 	orders.POST("/:id/accept", orderController.AcceptOrder)
+	orders.PUT("/:id/status", middleware.JwtAuthMiddleware(), orderController.UdpateOrderStatus)
 
 	port := os.Getenv("PORT")
 	if port == "" {

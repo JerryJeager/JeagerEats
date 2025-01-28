@@ -22,7 +22,8 @@ type OrderStore interface {
 	GetOrder(ctx context.Context, orderID uuid.UUID) (*models.Order, error)
 
 	RestaurantOwnerMail(ctx context.Context, restaurantID uuid.UUID) (*models.RestaurantOwnerMail, error)
-	
+
+	UpdateOrderStatus(ctx context.Context, orderStatusUpdate *models.OrderStatusUpdate, orderID uuid.UUID) error
 }
 
 type OrderRepo struct {
@@ -116,4 +117,11 @@ func (r *OrderRepo) RestaurantOwnerMail(ctx context.Context, restaurantID uuid.U
 		return nil, result.Error
 	}
 	return &restaurantOwner, nil
+}
+
+func (r *OrderRepo) UpdateOrderStatus(ctx context.Context, orderStatusUpdate *models.OrderStatusUpdate, orderID uuid.UUID) error {
+	if err := r.client.WithContext(ctx).Model(&models.Order{}).Where("id = ?", orderID).Update("status", orderStatusUpdate.Status).Error; err != nil {
+		return err
+	}
+	return nil
 }
