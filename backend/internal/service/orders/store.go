@@ -2,6 +2,7 @@ package orders
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/google/uuid"
@@ -16,6 +17,12 @@ type OrderStore interface {
 
 	GetRiders(ctx context.Context) (*[]models.User, error)
 	GetRestaurant(ctx context.Context, restaurantID uuid.UUID) (*models.Restaurant, error)
+
+	UpdateOrderRider(ctx context.Context, orderID uuid.UUID, orderRider *models.OrderRiderUpdate) error
+	GetOrder(ctx context.Context, orderID uuid.UUID) (*models.Order, error)
+
+	RestaurantOwnerMail(ctx context.Context, restaurantID uuid.UUID) (*models.RestaurantOwnerMail, error)
+	
 }
 
 type OrderRepo struct {
@@ -78,4 +85,35 @@ func (r *OrderRepo) GetRestaurant(ctx context.Context, restaurantID uuid.UUID) (
 		return nil, err
 	}
 	return &restaurant, nil
+}
+
+func (r *OrderRepo) UpdateOrderRider(ctx context.Context, orderID uuid.UUID, orderRider *models.OrderRiderUpdate) error {
+	if err := r.client.WithContext(ctx).Model(&models.Order{}).Where("id = ?", orderID).Updates(map[string]interface{}{
+		"status":   models.ACCEPTED,
+		"rider_id": orderRider.RiderID,
+	}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *OrderRepo) GetOrder(ctx context.Context, orderID uuid.UUID) (*models.Order, error) {
+	var order models.Order
+	if err := r.client.WithContext(ctx).Where("id = ?", orderID).First(&order).Error; err != nil {
+		return nil, err
+	}
+	return &order, nil
+}
+
+func (r *OrderRepo) RestaurantOwnerMail(ctx context.Context, restaurantID uuid.UUID) (*models.RestaurantOwnerMail, error) {
+	var restaurantOwner models.RestaurantOwnerMail
+	query := fmt.Sprintf(`
+		select u.email as email from users as u inner join restaurants as r  on u.id = r.user_id where r.id = '%v'
+	`, restaurantID)
+
+	result := r.client.Raw(query).Scan(&restaurantOwner)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &restaurantOwner, nil
 }

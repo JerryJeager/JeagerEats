@@ -9,6 +9,9 @@ type UserIDPathParam struct {
 type RestaurantIDPathParam struct {
 	ID string `uri:"id" binding:"required,uuid_rfc4122"`
 }
+type OrderIDPathParam struct {
+	ID string `uri:"id" binding:"required,uuid_rfc4122"`
+}
 type MenuIDPathParam struct {
 	ID string `uri:"id" binding:"required,uuid_rfc4122"`
 }

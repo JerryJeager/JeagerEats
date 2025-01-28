@@ -14,7 +14,7 @@ type Order struct {
 	RefID           string     `json:"ref_id"`
 	Status          string     `json:"status"`
 	DeliveryAddress string     `json:"delivery_address"`
-	DeliveryFee     int     `json:"delivery_fee"`
+	DeliveryFee     int        `json:"delivery_fee"`
 	TotalPrice      float64    `json:"total_price"`
 	CreatedAt       time.Time  `json:"created_at"`
 	UpdatedAt       time.Time  `json:"updated_at"`
@@ -28,7 +28,7 @@ type OrderCreate struct {
 	Status          string     `json:"status"`
 	TotalPrice      float64    `json:"total_price" binding:"required"`
 	DeliveryAddress string     `json:"delivery_address"`
-	DeliveryFee     int     `json:"delivery_fee"`
+	DeliveryFee     int        `json:"delivery_fee"`
 	Items           []Item     `json:"items" binding:"required"`
 	CreatedAt       time.Time  `json:"created_at"`
 	UpdatedAt       time.Time  `json:"updated_at"`
@@ -67,3 +67,7 @@ const (
 	INTRANSIT = "in_transit"
 	DELIVERED = "delivered"
 )
+
+type OrderRiderUpdate struct {
+	RiderID uuid.UUID `json:"rider_id" binding:"required"`
+}

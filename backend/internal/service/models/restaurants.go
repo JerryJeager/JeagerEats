@@ -35,9 +35,9 @@ type RestaurantUpdate struct {
 }
 
 type Vendor struct {
-	UserID       uuid.UUID `json:"user_id"`
+	UserID       uuid.UUID  `json:"user_id"`
 	RestaurantID *uuid.UUID `json:"restaurant_id"`
-	Role         string    `json:"role"`
+	Role         string     `json:"role"`
 }
 
 type IsActive struct {
@@ -60,3 +60,7 @@ type RestaurantPublicProfile struct {
 }
 
 type RestaurantPublicProfileList []RestaurantPublicProfile
+
+type RestaurantOwnerMail struct {
+	Email string `json:"email"`
+}

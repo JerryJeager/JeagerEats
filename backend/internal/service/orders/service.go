@@ -2,6 +2,7 @@ package orders
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 
@@ -14,6 +15,7 @@ import (
 
 type OrderSv interface {
 	CreateOrder(ctx context.Context, order *models.OrderCreate) (string, error)
+	UpdateOrderRider(ctx context.Context, orderID uuid.UUID, orderRider *models.OrderRiderUpdate) error
 }
 
 type OrderServ struct {
@@ -35,7 +37,7 @@ func (s *OrderServ) CreateOrder(ctx context.Context, order *models.OrderCreate) 
 	orderDetails.TotalPrice = order.TotalPrice
 	orderDetails.Status = models.PENDING
 	orderDetails.DeliveryAddress = order.DeliveryAddress
-	orderDetails.DeliveryFee = order.DeliveryFee 
+	orderDetails.DeliveryFee = order.DeliveryFee
 	orderDetails.RefID = utils.GenerateCode()
 
 	for _, item := range order.Items {
@@ -83,6 +85,54 @@ func (s *OrderServ) CreateOrder(ctx context.Context, order *models.OrderCreate) 
 	return id.String(), nil
 }
 
+func (s *OrderServ) UpdateOrderRider(ctx context.Context, orderID uuid.UUID, orderRider *models.OrderRiderUpdate) error {
+	order, err := s.repo.GetOrder(ctx, orderID)
+	if err != nil {
+		return err
+	}
+	if order.Status == models.ACCEPTED {
+		return errors.New("order has already been assigned to a rider")
+	}
+
+	restaurant, err := s.repo.GetRestaurant(ctx, order.RestaurantID)
+	if err != nil {
+		return err
+	}
+
+	restaurantMail, err := s.repo.RestaurantOwnerMail(ctx, order.RestaurantID)
+	if err != nil {
+		return err
+	}
+
+	customer, err := s.repo.GetUser(ctx, order.UserID)
+	if err != nil {
+		return err
+	}
+
+	rider, err := s.repo.GetUser(ctx, orderRider.RiderID)
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdateOrderRider(ctx, orderID, orderRider)
+	if err != nil {
+		fmt.Println("error from update rider in store")
+		return err
+	}
+
+	if err := sendDeliveryPickupConfirmation(rider, customer, order, restaurant); err != nil {
+		fmt.Println(err)
+	}
+	if err := sendCustomerRiderInfo(customer, rider, order); err != nil {
+		fmt.Println(err)
+	}
+	if err := sendRestaurantRiderMail(restaurant, rider, order, restaurantMail); err != nil {
+		fmt.Println(err)
+	}
+
+	return nil
+}
+
 func sendCustomerOrderEmail(userEmail string, menuSummary *[]models.MenuOrderSummary) error {
 
 	email := os.Getenv("EMAIL")
@@ -113,7 +163,7 @@ func sendRiderOrderEmail(riders *[]models.User, restaurant *models.Restaurant, o
 		emailPassword := os.Getenv("EMAILPASSWORD")
 		m := gomail.NewMessage()
 		m.SetAddressHeader("From", email, "JeagerEats")
-		m.SetHeader("To")
+		m.SetHeader("To", rider.Email)
 		m.SetAddressHeader("Cc", rider.Email, "JeagerEats")
 		m.SetHeader("Subject", "New Delivery Request")
 
@@ -125,6 +175,69 @@ func sendRiderOrderEmail(riders *[]models.User, restaurant *models.Restaurant, o
 		if err := d.DialAndSend(m); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+func sendDeliveryPickupConfirmation(rider, customer *models.User, order *models.Order, restaurant *models.Restaurant) error {
+
+	email := os.Getenv("EMAIL")
+	emailUsername := os.Getenv("EMAILUSERNAME")
+	emailPassword := os.Getenv("EMAILPASSWORD")
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", email, "JeagerEats")
+	m.SetHeader("To", rider.Email)
+	m.SetAddressHeader("Cc", rider.Email, "JeagerEats")
+	m.SetHeader("Subject", "Delivery")
+
+	m.SetBody("text/html", emails.DeliveryPickupConfirmation(rider, customer, order, restaurant))
+
+	d := gomail.NewDialer("smtp.gmail.com", 465, emailUsername, emailPassword)
+
+	// Send the email to user
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+	return nil
+}
+func sendCustomerRiderInfo(customer, rider *models.User, order *models.Order) error {
+
+	email := os.Getenv("EMAIL")
+	emailUsername := os.Getenv("EMAILUSERNAME")
+	emailPassword := os.Getenv("EMAILPASSWORD")
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", email, "JeagerEats")
+	m.SetHeader("To", customer.Email)
+	m.SetAddressHeader("Cc", customer.Email, "JeagerEats")
+	m.SetHeader("Subject", "Delivery Status Update")
+
+	m.SetBody("text/html", emails.CustomerRiderInfoMail(customer, rider, order))
+
+	d := gomail.NewDialer("smtp.gmail.com", 465, emailUsername, emailPassword)
+
+	// Send the email to user
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+	return nil
+}
+func sendRestaurantRiderMail(restaurant *models.Restaurant, rider *models.User, order *models.Order, restaurantOwnerMail *models.RestaurantOwnerMail) error {
+
+	email := os.Getenv("EMAIL")
+	emailUsername := os.Getenv("EMAILUSERNAME")
+	emailPassword := os.Getenv("EMAILPASSWORD")
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", email, "JeagerEats")
+	m.SetHeader("To", restaurantOwnerMail.Email)
+	m.SetAddressHeader("Cc", restaurantOwnerMail.Email, "JeagerEats")
+	m.SetHeader("Subject", "Rider Assigned for Pickup")
+
+	m.SetBody("text/html", emails.RestaurantRiderMail(restaurant, rider, order))
+
+	d := gomail.NewDialer("smtp.gmail.com", 465, emailUsername, emailPassword)
+
+	// Send the email to user
+	if err := d.DialAndSend(m); err != nil {
+		return err
 	}
 	return nil
 }

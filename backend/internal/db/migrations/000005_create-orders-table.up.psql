@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS orders(
     id uuid PRIMARY KEY,
     user_id uuid NOT NULL REFERENCES users(id),
     restaurant_id uuid NOT NULL REFERENCES restaurants(id),
-    rider_id uuid REFERENCES riders(id),
+    rider_id uuid REFERENCES users(id),
     total_price DECIMAL(10, 2) NOT NULL, 
     status VARCHAR(20),
     created_at TIMESTAMPTZ,

@@ -6,6 +6,7 @@ import (
 	"github.com/JerryJeager/JeagerEats/internal/service/models"
 	"github.com/JerryJeager/JeagerEats/internal/service/orders"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type OrderController struct {
@@ -36,4 +37,27 @@ func (c *OrderController) CreateOrder(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, gin.H{"id": id})
 
+}
+
+func (c *OrderController) AcceptOrder(ctx *gin.Context) {
+	var orderID OrderIDPathParam
+	if err := ctx.ShouldBindUri(&orderID); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		return
+	}
+
+	var orderRiderUpdate models.OrderRiderUpdate
+	if err := ctx.ShouldBindJSON(&orderRiderUpdate); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		return
+	}
+
+	id := orderID.ID
+
+	if err := c.serv.UpdateOrderRider(ctx, uuid.MustParse(id), &orderRiderUpdate); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		return
+	}
+
+	ctx.Status(http.StatusOK)
 }
